@@ -1,16 +1,14 @@
 site_name: HawkCD
 pages:
-- Resources: "resources.md"
-- User Guide: "user-guide.md"
-- Contribute:
-    - 'Contribution Agreement': 'contribute/contribution-agreement.md'
-    - 'Technical Documentation':
-      - 'Software Requirements Specification': 'contribute/technical-documentation/srs.md'
-      - 'Software Design Document': 'contribute/technical-documentation/sdd.md'
-      - 'Hawk API': 'contribute/technical-documentation/rest-api.md'
-    - 'Development Process' : 'contribute/development-process.md'
-    - 'Discussions': 'contribute/discussions.md'
-- Roadmap: 'roadmap.md'
-- Download: 'download.md'
-theme: united
+#- Resources: "resources.md"
+- Home: "index.md"
+- User Guide:
+   - Concepts: "concepts/index.md"
+   - Installation: "installation/index.md"
+   - Configuration: "configuration/index.md"
+   - Use Cases: "use-cases/index.md"
+- About:
+  - Release Notes: "about/release-notes.md"
+  - License: "about/license.md"
+theme: flatly
 #site_dir: ../../hawk-docs/hawk
