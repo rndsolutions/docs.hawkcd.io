@@ -91,3 +91,9 @@ From here, there are several options for you to continue:
 
     ![Screenshot](../img/delete-pipeline-group.png)
 ### Configure Server
+### Create materials
+### Run multiple agents on a Server
+### Running shell/bash and PowerShell scripts
+### Uploading Artifacts
+### Fetch Artifacts
+### Fetch Materials
