@@ -48,4 +48,46 @@ Here, you can review the pipeline you just created and if everything is correct,
 ### Setup resources
 ### Create & Authorize users
 ### Manage  pipeline groups
+
+>*Pipeline Group is logical container for pipelines, created with the sole purpose for separation of pipelines.*
+
+In order to manage the pipeline groups which you operate within, navigate to Administration Section of the menu, and choose Pipeline groups.
+
+![Screenshot](../img/pipeline-groups-home.png)
+
+From here, there are several options for you to continue:
+
+1. *Create new Pipeline Group*
+
+    In order to create new **Pipeline Group**, click the "**ADD**" button at the top of the page.
+
+    Once clicked, a modal window pops up, where you have to option to write down the name of the new Pipeline Group and proceed with the creation process.
+
+    ![Screenshot](../img/add-pipeline-group.png)
+
+2. *Manage Pipelines within certain Pipeline Group*
+
+    There are two options for managing Pipelines within Pipeline Group:
+
+      + Assign Pipeline
+
+          In order to assign Pipeline to Pipeline Group, click on the Pipeline Group you want to operate with and then click on "**АSSIGN PIPELINE**" button.
+
+          ![Screenshot](../img/pipeline-group-assign-pipeline.png)
+
+          Once done, a modal window will appear on the screen. There you can choose from all Unassigned Pipelines or the ones that are within other Pipeline Groups. As soon as you spot the desired pipeline, click on it to mark it for assignment.  If done, click on "**ASSIGN PIPELINE**" to finalize the process.
+
+          ![Screenshot](../img/assign-pipeline-modal.png)
+
+      + Unassign Pipeline
+
+          In order to Unassign Pipeline from Pipeline Group, first you select the pipeline group, then you click on the pipeline you want to unassign, and finally click on the aleary clickable button "**UNASISIGN PIPELINE**"
+
+          ![Screenshot](../img/pipeline-group-unassign-pipeline.png)
+
+3. *Delete Pipeline Group*
+
+    In order to delete a Pipeline Group, it should be empty. Only then, the button in the form of trash bin will appear and you will be able to delete the desire Pipeline Group.
+
+    ![Screenshot](../img/delete-pipeline-group.png)
 ### Configure Server
