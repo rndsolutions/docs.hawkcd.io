@@ -12,29 +12,30 @@
 ### Running shell/bash and PowerShell scripts
 ### Uploading Artifacts
 
->Uploading Artifacts Task allows you to transfer artifacts from the Agent to the Server.
+The ability to re-use artifacts across various stages downstream of the pipeline is important aspect of a CD Pipeline. It requires to store them in a file share, ftp or artifacts repository. HawkCD allows you to store artifacts on the server directly and pull them on demand - whenever you need to be deployed. A common use case of the __Upload Artifacts__ task is when you do a build of you code base and would like to use the build output to deploy it to downstream enviroments e.g. Dev, Staging.
 
-To add Upload Artifact Task you have to specify the job in which the task will operate. Once you do this, you can click the "**ADD TASK**" button and choose **Upload Artifact** from the dropdown field
+The server has built-in task called __Upload Artifacts__ that simplifies the process
 
-![Screenshot](../img/add-upload-artifact-task.png)
 
-* The Source field points to the artifact that will be uploaded. The directory in which this artifact has to be placed is as follows
+To add __Upload Artifact__ Task to your pipeline you have to specify the job in which the task will operate. Once you do this, you can click the "**ADD TASK**" button and choose **Upload Artifact** from the dropdown field
 
-        Agent root folder
 
-            +Pipelines
+![Screenshot](../img/upload_artifacts_task.png)
 
-              +Pipeline name folder
+#### How does it work ?
 
-        in other words: Agent/Pipleines/Pipeline_name/
+The __Source__ field points to the artifact that will be uploaded to the server, the __Destination__ folder points to directory on the server where the artifacts will be stored.
 
-    ***Example:*** If your Pipeline name is **HawkCD**, the artifact directory is: Agent/Pipelines/HawkCD/. So, in order for uploading to be successful, the artifact should be placed in this particular directory.
+#### How to figure the agent sandbox folder?
+The root folder of the agent is wherever it's been installed, however the agent pipelines sandbox is defined as follows:
 
-* The Destination field points to the place where this artifact will be uploaded
+In the Agent installation directory there is a folder called Pipelines where all the pipelines that have been run on the particular agents will be created
 
-    + If left blank, the artifact will be stored in its Default Directory on the Server.
+  If you have a Pipeline named Foo, and you want to upload artifacts that are in the root of the agent sandbox i.e. <InstallDir>/Pipelines/Foo/. you would need to leave the Source and Destinations folders empty
 
-    + If filled, the artifact will be stored in a folder within the Default Directory.
+
+If the Destination field is left blank, the artifact will be stored in its Default Directory on the Server.
+
 
     ***Default Directory***
 
