@@ -6,7 +6,7 @@
 To create a pipeline, we must first understand the Continuous Delivery methodology/process. <br />
 </p>
 
-<div class="questionTitles">What is a Continuous Delivery and why do we use it? </div>
+<div class="questionTitles">What is Continuous Delivery and why do we use it? </div>
 [useful links or our explanation]<br />
 
 <p>
@@ -25,7 +25,7 @@ The continuous delivery pipeline breaks down the software delivery process into 
 <p>
 Creating a pipeline in HawkCD is very easy and its separated in few simple steps.
 We'll explain it in details shortly. </br />
-Before create a pipeline we must first choose the pipeline group in which we want our pipeline to be created.<br />
+Before creating a pipeline we must first choose the pipeline group in which we want our pipeline to be created.<br />
 In order to create a pipeline, we must have a pipeline group. That is why HawkCD comes with<br />
 a <b> defaultPipelineGroup</b>.<br /><br />
 </p>
