@@ -52,7 +52,58 @@ A Stage consists of multiple jobs, each of which can run independently of the ot
 
 ### Pipeline
 
+#### Overview
 A Pipeline consists of multiple Stages, each of which will be run in order. If a Stage fails, then the Pipeline is considered failed and the rest of the stages will not be started. A pipeline can be thought also as a "process"
+
+#### How it works?
+
+How a single Pipeline actually works? We briefly showed you the <a href="#anatomy-of-a-cd-pipeline"> Anatomy of a Pipeline </a>.<br />
+All of your Pipelines will have a set of Stages  which will have a set of Jobs which will have a set of Tasks. Task are what gets things done.
+From the first push of your new feature to your project repository, to the new release of your software. <br /> <br />
+There are four different types of tasks in HawkCD - <a href="#">Exec</a>,<a href="#"> Fetch Artifact</a>, <a href="#">Fetch Material</a> and <a href="#">Upload Artifact</a>. In order your Pipeline run to be set to
+<a href="#statuses">status </a> PASSED, each of your task's action must complete successfully, unless the task is marked otherwise with <a href="#"> Ignore Errors</a> option. <br />
+
+If all tasks in a certain Job complete successfully, the Job will be set to PASSED, all jobs must be with status PASSED for a Stage to pass. All Stages must pass for your Pipeline
+run to complete successfully. If a Task fail the Job in which is defined will fail, respectively the whole Pipeline will be set to FAILED. <br /> <br />
+
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>
+All Stages and Tasks runs in sequence, except Jobs. Execution starts in order, if one Task, Job, or Stage fails the next Task/Job/Stage will not run.
+The Pipeline will be set to FAILED.
+</p>
+</div>
+
+#### Configure Options
+In HawkCD you can manage your Pipeline very easily.<br /><br />
+You can <a href="/configuration/#configure-pipeline">update pipeline name</a> or select <a href="#automatic-pipeline-scheduling"> Automatic pipeline scheduling</a>. You can <a href="#"> add Stage </a>, <a href="#"> add Job </a> or <a href="#">
+add Task </a> to already created Pipeline. Delete each one of them is also pretty straightforward, with just one click. Each Pipeline, Stage, Job or Task can be configured in details.<br /> <br />
+
+
+Click <a href="/configuration/#configure-pipeline"> Configure Pipeline </a> to see how to configure your  <a href="#environment-variables"> Environment Variables</a> or how to add <a href="#resource"> Resources. </a>
+
+<br />
+<br />
+<br />
+
+Here is a list of options you can do. <br />
+> <a href ="/configuration#create-a-pipeline"> Add new Pipeline </a> <br />
+<a href ="/configuration/#configure-pipeline"> Configure Pipeline </a> <br />
+<a href ="#"> Delete Pipeline </a>
+
+<br />
+
+### Pipeline Groups
+
+#### Overview
+#### How it works?
+#### Configure
+
+### Materials
+
+#### Overview
+#### How it works?
+#### Configure
 
 ### Resource
 
@@ -67,6 +118,10 @@ The resources assigned to an agent and job must match 100% to get jobs routed co
 > Assign resource to an agent
 
 ![Screenshot](../img/assign_resource_to_agent.png)
+
+### Environment Variables
+
+### Automatic Pipeline Scheduling
 
 ### Agent
 

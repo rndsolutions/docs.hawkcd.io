@@ -10,5 +10,5 @@ pages:
 - About:
   - Release Notes: "about/release-notes.md"
   - License: "about/license.md"
-theme: flatly
+theme: readthedocs
 #site_dir: ../../hawk-docs/hawk
