@@ -17,11 +17,13 @@ There is no such thing as _Standard Deployment Pipeline_, however a typical CD p
 
 Eg. CD process
 
-### Task
+### Tasks
 
 A task is an action that is performed on a server/machine or a container where the HawkCD agent is installed. HawkCD offers 4 types of tasks
 
 >Exec Task
+
+
 
 The "Exec" task is the most universal type of tasks, it allows you to do just anything you can think of on a given server where the task is executed on. You can run script, e.g. PowerShell, Shell, execute commands etc.
 
