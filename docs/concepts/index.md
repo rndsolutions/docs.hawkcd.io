@@ -77,7 +77,7 @@ The Pipeline will be set to FAILED.
 #### Configure Options
 In HawkCD you can manage your Pipeline very easily.<br /><br />
 You can <a href="/configuration/#configure-pipeline">update pipeline name</a> or select <a href="#automatic-pipeline-scheduling"> Automatic pipeline scheduling</a>. You can <a href="#"> add Stage </a>, <a href="#"> add Job </a> or <a href="#">
-add Task </a> to already created Pipeline. Delete each one of them is also pretty straightforward, with just one click. Each Pipeline, Stage, Job or Task can be configured in details.<br /> <br />
+add Task </a> to already created Pipeline. Delete each one of them is also pretty straightforward, with just one click. Each Pipeline, Stage, Job or Task can be configuredmk in details.<br /> <br />
 
 
 Click <a href="/configuration/#configure-pipeline"> Configure Pipeline </a> to see how to configure your  <a href="#environment-variables"> Environment Variables</a> or how to add <a href="#resource"> Resources. </a>
