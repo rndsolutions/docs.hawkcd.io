@@ -1,10 +1,9 @@
-##Concepts
-
-### Continuous Delivery Overview
-
+Continuous Delivery Overview
+==============================
 Continuous Delivery (CD) approach to shipping software has been around for few years now, implemented in teams allows them to produce software in rapid cycles, ensuring that the software can be reliably released at any time. It aims at building, testing, and releasing software faster and more frequently. The approach helps reduce the cost, time, and risk of delivering changes by allowing for more incremental updates to applications in production. HawkCD helps teams to adopt CD practices in the SDLC (Software Development Lifecycle) by giving them the freedom to create CD Pipelines to model their release processes.
 
-### Anatomy of a CD pipeline
+Anatomy of a CD pipeline
+--------------------------
 
 *The Deployment Pipeline* is a central concept in the CD approach of shipping software. At abstract level, a deployment pipeline is an automated implementation of the software release process for getting software from version control to the market. Usually every change in the software goes through a complex process on its way to being released. The process may involve building the source code, followed by progress of these builds through numerous of stages where the product quality gets assessed. The Deployment Pipeline becomes a central collaboration hub for the software delivery team. Ability to automate the process is crucial for the team productivity.
 
@@ -14,53 +13,62 @@ There is no such thing as _Standard Deployment Pipeline_, however a typical CD p
 
 ![Screenshot](../img/CD_Pipeline1.png)
 
-Eg. CD process
+Server Objects & Concepts
+=========================
+The following section represents a deep dive into the HawkCD Server concepts, components and objects.
 
-### Tasks
+Tasks
+-----
 
-A task is an action that is performed on a server/machine or a container where the HawkCD agent is installed. HawkCD offers 4 types of tasks
+A task is an action that is performed on a server/machine or inside container where HawkCD agent is installed. HawkCD offers 4 types of tasks
 
-#### Exec Task
-> ##### Overview
+Exec Task
+--------------
+### Overview
 
->The "Exec" task is the most universal type of tasks, it allows you to do just anything you can think of on a given server where the task is executed on. You can run script, e.g. PowerShell, Shell, execute commands etc.
+The "Exec" task is the most universal type of tasks HawkCD offers. It allows you to do just anything you can think of on a given server where the task is executed on. You can run script, e.g. PowerShell, Shell, execute commands etc.
 
-> #### How it works?
-The way it runs commands is the same as if you were typing behind a keyboard on the terminal (Windows console). Of course, that means that one same command that execute on Linux Shell
-may deffer in syntax on Windows  PowerShell.
+### How it works?
+The exec task contains the following attributes: ``Command``, ``Arguments`` and ``Working Dir``.
 
-> To get back on *Exec Task*.<br />
-To run *Exec Task* user must fill out tow major parameters
-> > * *Task Command*
-> > * *Arguments*
+* ``Command`` - the command you want to run, usually for Linux -``/bin/bash``, for Windows ``cmd``
+* ``Arguments`` - the arguments you want to pass to the executable e.g. Linux - ``-c cp -r dir dir1`` , Windows ``/c echo %PAHT%``
+* ``Working Dir `` - the directory you want the process to be run in
 
-> *Task Command* expects you to fill out the type of the command that you want to execute,
-<br /> like cmd for example. For now,  HawkCD supports only type of commands.
+Example commands:
 
->> * /bin/bash - for Linux
->> * cmd - for Windows
+```bash
 
+  #copy all files
 
-> *Arguments* are variables passed to a command call. Like this example on a Linux box. <br />
+  /bin/bash -c cp -r dir1/  dir2
 
->![Screenshot](../img/hawkCDSteps/exec-task.png)
+```
+The above command runs on Linux based systems the ``bash`` executable and passes the ``cp`` command with arguments to it
 
->*/bin/bash* is the command we want to execute (a bash script) and *-c rm -rf build/\** <br /> are the arguments that we pass to the bash script. <br /> <br />
->This example task will clear all of the files in *build* directory, which is placed in *MyProjectDirecotory*.
-
-
-> #### Configure Options
-
->*Exec Task* provides two configure options .
-
- >*Run If Condition* - runs under three different scenarios: *Passed*, *Failed*, *Any*. <br />
- >If option *Passed* is checked, the execution flow of the task will continue in order if the previous task is passed successfully.
- Task that is marked with *Failed* will be the first to run after any previous task has failed. To put it straight, if any task fails, the work [Agent](#agent) will
- automatically search and run  any task that its *Run If Condition* is marked with *Failed*.<br />
- >Task marked with *Any* will always run, regardless of previous state of other tasks.
+  <div class="admonition note">
+  <p class="admonition-title">Note</p>
+  <p>
+  You can think of HawkCD Exec Task as universal command executor. In fact it can run any command via ``cmd`` or ``/bin/bash``, ``/bin/sh`` as long as it's in the environment path (system | user) on the system, otherwise the ``Command`` value must be direct path to targeted executable on the system
+  </p>
+  </div>
 
 
- >*Ignore Errors* - Ignores errors if there are any and sets task status to *PASSED*.  <br />
+
+### Configuration Options
+
+The ``Exec Task`` provides two configuration options:
+
+* ``Run If Condition``
+* ``Ignore Errors ``
+
+
+ ``Run If Condition`` - runs under three different scenarios: ``Passed``, ``Failed`` and ``Any``.
+ If option ``Passed`` (default) is chosen, the execution of the current task will be continued only in case the previous task completed successfully - ``Passed``
+ If the option ``Failed`` is chosen it will be run only in case the previous task is marked as ``Failed``.
+ A task set to ``Any`` will always run, regardless of previous task status (``Passed`` | ``Failed``).
+
+ ``Ignore Errors`` - Ignore errors, if there are any, and sets task status to ``Passed``.
 
  <div class="admonition warning">
  <p class="admonition-title">WARNING</p>
