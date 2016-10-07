@@ -1,4 +1,3 @@
-
 ##Concepts
 
 ### Continuous Delivery Overview
@@ -21,11 +20,64 @@ Eg. CD process
 
 A task is an action that is performed on a server/machine or a container where the HawkCD agent is installed. HawkCD offers 4 types of tasks
 
->Exec Task
+#### Exec Task
+> ##### Overview
 
-The "Exec" task is the most universal type of tasks, it allows you to do just anything you can think of on a given server where the task is executed on. You can run script, e.g. PowerShell, Shell, execute commands etc.
+>The "Exec" task is the most universal type of tasks, it allows you to do just anything you can think of on a given server where the task is executed on. You can run script, e.g. PowerShell, Shell, execute commands etc.
 
->Fetch Material
+> #### How it works?
+The way it runs commands is the same as if you were typing behind a keyboard on the terminal (Windows console). Of course, that means that one same command that execute on Linux Shell
+may deffer in syntax on Windows  PowerShell.
+
+> To get back on *Exec Task*.<br />
+To run *Exec Task* user must fill out tow major parameters
+> > * *Task Command*
+> > * *Arguments*
+
+> *Task Command* expects you to fill out the type of the command that you want to execute,
+<br /> like cmd for example. For now,  HawkCD supports only type of commands.
+
+>> * /bin/bash - for Linux
+>> * cmd - for Windows
+
+
+> *Arguments* are variables passed to a command call. Like this example on a Linux box. <br />
+
+>![Screenshot](../img/hawkCDSteps/exec-task.png)
+
+>*/bin/bash* is the command we want to execute (a bash script) and *-c rm -rf build/\** <br /> are the arguments that we pass to the bash script. <br /> <br />
+>This example task will clear all of the files in *build* directory, which is placed in *MyProjectDirecotory*.
+
+
+> #### Configure Options
+
+>*Exec Task* provides two configure options .
+
+ >*Run If Condition* - runs under three different scenarios: *Passed*, *Failed*, *Any*. <br />
+ >If option *Passed* is checked, the execution flow of the task will continue in order if the previous task is passed successfully.
+ Task that is marked with *Failed* will be the first to run after any previous task has failed. To put it straight, if any task fails, the work [Agent](#agent) will
+ automatically search and run  any task that its *Run If Condition* is marked with *Failed*.<br />
+ >Task marked with *Any* will always run, regardless of previous state of other tasks.
+
+
+ >*Ignore Errors* - Ignores errors if there are any and sets task status to *PASSED*.  <br />
+
+ <div class="admonition warning">
+ <p class="admonition-title">WARNING</p>
+ <p>
+ Be aware that [Task](#task) marked with *FAILED* will run only if there is failed [Task](#task) in the same [Job](#job) pile.
+ </p>
+ </div>
+
+
+
+ >See [here](/configuration/#add-delete-exec-task) how to add *Exec Task*,
+ [Delete Exec Task](/configuration/#delete-exec-task) or [Configure Exec Task](/configuration/#configure-exec-task) to configure it.
+
+
+
+
+#### Fetch Material
 
 The Fetch Material task allows you to fetch already defined materials w/ the system. A common use case is when you need to build your source code but before doing it you need to fetch it on the agent, so you would arrange your job task like this:
 
@@ -33,17 +85,45 @@ The Fetch Material task allows you to fetch already defined materials w/ the sys
 ![Screenshot](../img/fetch_material_task.png)
 
 
->Fetch artifacts
+#### Fetch artifacts
 
 The Fetch Artifacts tasks allows users to carry on artifacts - build output, tests results to various stages
 
->Upload Artifacts
+#### Upload Artifacts
 
 The Upload Artifacts task respectively allows you to upload build artifacts to the server. A common use case is when you compile a source code to store the build output to the server via using the Upload Artifacts task. then using Fetch Artifacts to deploy it on appropriate agent
 
 ### Job
 
-A job consists of multiple Tasks, each of which will be run in order. If a Task in a Job fails, then the Job is considered failed, and unless specified otherwise, the rest of the Tasks in the Job will not be run. It's critical to note here that jobs are executed in parallel on the server while task of a job are always executed in sequence
+#### Overview
+
+A job consists of multiple Tasks, each of which will be run in order. If a Task in a Job fails, then the Job is considered failed, and unless specified otherwise, the rest of the Tasks in the Job will not be run.
+
+#### How it works?
+
+Unlike Tasks and Stages which are always executed in sequence, Jobs are running parallel on<br /> the server.
+This is so, because each Job may require a specific [Resource](#resource) in order to be executed. <br /> <br />
+While one Job is executing, another one may be waiting for the same [Agent](#agent) executor or for <br />
+an [eligible Agent](#agent) which may not even be present on the server. In this scenario, your Pipeline <br />
+will be set to status AWAITING and will resume execution the minute [eligible Agent](#agent) checks in.
+<br /> <br />
+Job without resources can be executed from all agents.  Job with a specific
+[resource](#resource) may be executed only from an [agent](#agent) with same resource.
+Job may have more than one resource. <br />
+
+A Job also may have [Environment Variables](#environment-variables).<br />
+Job's environment variable overrides its own Stage environment variable. <br />
+This is so that specific job can belong to different environment. <br /> <br />
+To learn more about  how environment variables work, check the [Environment Variables](#environment-variables) section.
+
+
+
+#### Configure Options
+Job may be created first and decided to be configured later. Its configure options include updating job name, adding, editing or deleting a task list.
+Overriding environment variable, adding resource. <br /> <br />
+Check here to see how to [add/delete job](/configuration/#add-delete-job) or [configure job](/configuration/#configure-job)
+
+
 
 
 ### Stage
@@ -70,14 +150,14 @@ run to complete successfully. If a Task fail the Job in which is defined will fa
 <p class="admonition-title">Note</p>
 <p>
 All Stages and Tasks runs in sequence, except Jobs. Execution starts in order, if one Task, Job, or Stage fails the next Task/Job/Stage will not run.
-The Pipeline will be set to FAILED.
+The Pipeline will be set to FAILED. 
 </p>
 </div>
 
 #### Configure Options
 In HawkCD you can manage your Pipeline very easily.<br /><br />
 You can <a href="/configuration/#configure-pipeline">update pipeline name</a> or select <a href="#automatic-pipeline-scheduling"> Automatic pipeline scheduling</a>. You can <a href="#"> add Stage </a>, <a href="#"> add Job </a> or <a href="#">
-add Task </a> to already created Pipeline. Delete each one of them is also pretty straightforward, with just one click. Each Pipeline, Stage, Job or Task can be configuredmk in details.<br /> <br />
+add Task </a> to already created Pipeline. Delete each one of them is also pretty straightforward, with just one click. Each Pipeline, Stage, Job or Task can be configured in details.<br /> <br />
 
 
 Click <a href="/configuration/#configure-pipeline"> Configure Pipeline </a> to see how to configure your  <a href="#environment-variables"> Environment Variables</a> or how to add <a href="#resource"> Resources. </a>
