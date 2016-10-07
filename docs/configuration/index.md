@@ -78,10 +78,76 @@ Pipeline name changed.<br />
 ### Automatic Scheduling
 ### Add / Delete Stage
 #### Configure Stage
+
+### Add / Delete Job
+Choose Pipeline you wish to add Job to and click *config* button (the one in the middle).
+![Screenshot](../img/hawkCDSteps/add-exec-choose.png) <br /> <br />
+Navigate to the Stage you wish to add Job to.
+Jobs tab is selected by default.  click <strong>*Add Job*</strong>.
+![Screenshot](../img/hawkCDSteps/add-job-navToStage.png) <br /> <br />
+
+
+Enter Job name, select job's task, fill task's form template add click <strong>*Add Job*</strong>.
+![Screenshot](../img/hawkCDSteps/add-job-fillTmp.png) <br /> <br />
+
+
+Done! <br />
+*MyJob added*. <br />
+![Screenshot](../img/hawkCDSteps/add-job-done.png) <br /> <br />
+
+##### Delete Job
+Choose Pipeline where to delete Job from and click *config* button (the one in the middle).
+![Screenshot](../img/hawkCDSteps/delete-job-chooseP.png) <br /> <br />
+
+Navigate to Stage where the Job is placed and click *Delete*.
+![Screenshot](../img/hawkCDSteps/delete-job.png) <br /> <br />
+
+Confirm removal by clicking *Delete* button.
+![Screenshot](../img/hawkCDSteps/delete-job-delete.png) <br /> <br /
+
+
+
+#### Configure Job
+
 ### Add / Delete Task
 #### Configure Task
 #### Add / Delete Exec Task
+##### # Add Exec Task
+Choose pipeline and click *config* button (the one in the middle)<br />
+![Screenshot](../img/hawkCDSteps/add-exec-choose.png) <br /> <br />
+
+Navigate to the [Job](/) to which you want to add [Task](/) <br />
+*Tasks* tab is selected by default. Click on *Add Task*.<br />
+![Screenshot](../img/hawkCDSteps/add-exec-add.png) <br /> <br />
+
+Choose *Exec* on the *Task Type*, fill out the form and click *Add Task*. <br />
+![Screenshot](../img/hawkCDSteps/add-exec-task-submit.png) <br /> <br />
+
+<strong> DONE! </strong> <br />
+![Screenshot](../img/hawkCDSteps/add-exec-task-done.png) <br /> <br />
+
+##### # Delete Exec Task
+
+Navigate to the [Job](/concepts/#job) from where you want to delete the [Task](/concepts/#task) <br />
+![Screenshot](../img/hawkCDSteps/exec-task-navigate-delete.png) <br /> <br />
+
+Click *Delete* to remove selected task.<br />
+![Screenshot](../img/hawkCDSteps/exec-task-delete.png)
+
 ##### Configure Exec Task
+
+There are two options that can be configured on *Exec Task*.
+<br />
+<br />
+
+First, navigate to selected [Job](/concepts/#job) and click *Edit* on the [Task](/concepts/#task)  to configure.<br />
+![Screenshot](../img/hawkCDSteps/exec-task-edit.png) <br /> <br />
+
+Configure the desired behavior for your [Task](/concepts/#task) and click *Edit Task*. <br /> <br />
+![Screenshot](../img/hawkCDSteps/exec-task-configure.png) <br /> <br />
+
+
+
 #### Add / Delete Upload Artifact
 ##### Configure Upload Artifact
 #### Add / Delete Fetch Artifact Task
