@@ -16,7 +16,7 @@ There is no such thing as _Standard Deployment Pipeline_, however a typical CD p
 
 Eg. CD process
 
-### Task
+### Tasks
 
 A task is an action that is performed on a server/machine or a container where the HawkCD agent is installed. HawkCD offers 4 types of tasks
 
@@ -69,6 +69,11 @@ To run *Exec Task* user must fill out tow major parameters
  </p>
  </div>
 
+
+
+
+The "Exec" task is the most universal type of tasks, it allows you to do just anything you can think of on a given server where the task is executed on. You can run script, e.g. PowerShell, Shell, execute commands etc.
+>>>>>>> 2e2b3f6d8ebc535e0500de9c2b8b9a706e35ec97
 
 
  >See [here](/configuration/#add-delete-exec-task) how to add *Exec Task*,
@@ -150,7 +155,7 @@ run to complete successfully. If a Task fail the Job in which is defined will fa
 <p class="admonition-title">Note</p>
 <p>
 All Stages and Tasks runs in sequence, except Jobs. Execution starts in order, if one Task, Job, or Stage fails the next Task/Job/Stage will not run.
-The Pipeline will be set to FAILED. 
+The Pipeline will be set to FAILED.
 </p>
 </div>
 
