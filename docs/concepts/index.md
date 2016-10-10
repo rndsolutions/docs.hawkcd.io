@@ -94,7 +94,33 @@ The ``Fetch Material`` task allows you to fetch already defined materials with t
 ### Configuration Options
 
 
-Fetch artifacts
+Upload Artifacts
+----------------
+
+### Overview
+The Upload Artifacts task respectively allows you to upload build artifacts to the server. A common use case is when you compile a source code to store the build output to the server via using the Upload Artifacts task. then using Fetch Artifacts to deploy it on appropriate agent.
+
+### How does it works?
+``Agent`` deploys specified artifact to the ``Server``.<br />
+To upload artifacts to the server, two attributes must be specified: ``Source`` and ``Destination``. <br />
+
+``Source``  - is ``required`` to be specified in order artifact to be uploaded. It may be previous built or any other artifact
+placed in the agents work directory. <br />
+<br />``Destination``  -  The ``Artifacts`` folder on the ``Server``,  <br />
+
+### Configuration Options
+
+The ``Upload Artifact`` task provides one configuration option:
+
+* ``Run If Condition``
+
+ ``Run If Condition`` - runs under three different scenarios: ``Passed``, ``Failed`` and ``Any``.
+ If option ``Passed`` (default) is chosen, the execution of the current task will be continued only in case the previous task completed successfully - ``Passed``
+ If the option ``Failed`` is chosen it will be run only in case the previous task is marked as ``Failed``.
+ A task set to ``Any`` will always run, regardless of previous task status (``Passed`` | ``Failed``).
+
+
+Fetch Artifacts
 ---------------
 
 ### Overview
@@ -105,10 +131,6 @@ The ``Fetch Artifacts`` task allows users to download artifacts from the server 
 ### Configuration options
 
 
-Upload Artifacts
------------------
-
-The Upload Artifacts task respectively allows you to upload build artifacts to the server. A common use case is when you compile a source code to store the build output to the server via using the Upload Artifacts task. then using Fetch Artifacts to deploy it on appropriate agent
 
 Job
 -----
