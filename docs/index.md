@@ -1,24 +1,22 @@
 
-##HawkCD
-Lightweight Continuous Delivery Server
+HawkCD
+=======
+Lightweight ``Continuous Delivery`` Server
 
+``HawkCD`` is automation solution for building ``Continuous Delivery`` pipelines.
+The project development is inspired by the ``Continuous Delivery`` principles and practices. ``HawkCD`` allows automating the software release process - from code check-in through build and automated testing to production deployments.
 
-### Overview
-The HawkCD is being inspired by the Continuous Delivery practices and principles. It is a Lightweight CD Server that allows automating the entire software release process - from code check-in through build and automated testing to production deployment.
+The product is in ``Alpha`` phase
 
-The HawkCD is automation solution for building Continuous Delivery pipelines
+Installation
+------------
 
-
-### Installation
-
-The Server currently has been tested on Linux & Windows operating systems
+``HawkCD`` is being tested on Linux & Windows operating systems
 
 #### Linux
-For Linux like system the HawkCD is being distributed as a self containing package, it ships with embedded Redis database.
+For Linux like system ``HawkCD`` is distributed as a self containing package, it ships with embedded Redis database.
 
-
-#### Install & Run the latest bits
---------------
+Install & run the Server
 
 ```sh
 wget http://www.hawkcd.io/downloads/latest/hawkcd.tar.gz
@@ -27,8 +25,8 @@ cd Server
 ./hawkcd.sh
 ```
 
-#### Install & Run the the agent latest bits
------------------
+Install & Run the the agent
+
 ```sh
 wget http://www.hawkcd.io/downloads/latest/hawkcd-agent.tar.gz
 tar zxvf hawkcd-agent.tar.gz
@@ -36,6 +34,15 @@ cd Agent
 ./agent.sh
 ```
 
-### Getting Started
 
-TODO:
+#### Windows
+
+Soon to come :)
+
+Getting Started
+----------------
+
+* [Continuous Delivery & Server concepts](/concepts)
+* [Setup your first pipeline](configuration/#set-up-a-pipeline)
+* [Pipeline Configuration](/configuration/#pipeline-configuration)
+* [Running a pipeline](/configuration/#running-a-pipeline)
