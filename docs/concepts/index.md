@@ -151,15 +151,35 @@ The ``Upload Artifact`` task provides one configuration option - ``Run If Condit
 
 
 
-Fetch Artifacts
+Fetch Artifact
 ---------------
 
 ### Overview
-The ``Fetch Artifacts`` task allows users to download artifacts from the server repository into a ``HawkCD`` agent sandbox.
+The ``Fetch Artifact`` task allows users to download artifacts from the server repository into a ``HawkCD`` agent sandbox.
 
 ### How does it work?
+``Fetch Artifact`` downloads artifact from ``Server`` to agent sandbox.  
+The fetch artifacts contains the following attributes: ``Pipeline``, ``Run``, ``Source`` and ``Destination``.
+
+* ``Pipeline`` - Which pipeline.
+* ``Run`` - Which pipeline run.
+* ``Source``  - Path to ``Artifact``.  
+* ``Destination`` - Path to server destination where artifacts to be stored (optional).
 
 ### Configuration options
+The ``Fetch Artifact`` task provides one configuration option - ``Run If Condition``
+
+ ``Run If Condition`` - runs under three different scenarios: ``Passed``, ``Failed`` and ``Any``.
+ If option ``Passed`` (default) is chosen, the execution of the current task will be continued only in case the previous task completed successfully - ``Passed``
+ If the option ``Failed`` is chosen it will be run only in case the previous task is marked as ``Failed``.
+ A task set to ``Any`` will always run, regardless of previous task status (``Passed`` | ``Failed``).
+
+### Fetch Artifact Tasks Scenarios
+
+* [Add ](/configuration/#)
+* [Delete ](/configuration/#)
+* [Configure](/configuration/#)
+
 
 
 Job
