@@ -91,7 +91,24 @@ The ``Fetch Material`` task allows you to fetch already defined materials with t
 
 ### How does it work?
 
+The Fetch Material task clones directly from projects source into ``Agent``. <br />
+``Fetch Materials`` task contains one attribute - [``material``](/#materials). <br /> </br >
+At the moment ``HawkCD`` supports only one material per pipeline. Multiple materials (e.g. sources) may be added into feature versions.
+
 ### Configuration Options
+``Fetch Material`` task provides one configuration option - ``Run If Condition``. <br /> <br />
+``Run If Condition`` - runs under three different scenarios: ``Passed``, ``Failed`` and ``Any``.
+If option ``Passed`` (default) is chosen, the execution of the current task will be continued only in case the previous task completed successfully - ``Passed``
+If the option ``Failed`` is chosen it will be run only in case the previous task is marked as ``Failed``.
+A task set to ``Any`` will always run, regardless of previous task status (``Passed`` | ``Failed``).
+
+### Fetch Material Tasks Scenarios
+
+* [Add ](/configuration/#)
+* [Delete ](/configuration/#)
+* [Configure](/configuration/#)
+
+
 
 
 Fetch artifacts
@@ -115,7 +132,7 @@ Job
 
 ### Overview
 
-A ``job`` consists of multiple ``tasks``, each of which executes in order. If ``task`` inside a ``job`` fails, then the ``job`` is considered failed, and unless specified otherwise, the rest of the tasks in the ``job`` will not be run.
+A ``job`` consists of multiple ``tasks``, each of which executes in order. If ``task`` inside a ``job`` fails, then the ``job`` is considered failed, and unless specified otherwise, the rest of the tasks in the will not be run.
 
 ### How does it work?
 
@@ -140,9 +157,19 @@ Overriding environment variable, adding resource
 
 Stage
 -------
+### Overview
 A ``Stage`` can be thought as a container for ``Jobs``. While ``Jobs`` are run in parallel, ``Stages`` are always run in sequence. If a ``Job`` from particular stage fails, then the Stage is considered failed as well.
 
 However, since Jobs are independent of each other, all other Jobs in the Stage will also be run. Stages that belong to a certain pipeline are always run in sequence.
+
+### How does it work?
+
+
+
+
+### Configure Options
+
+
 
 Pipeline
 ---------
