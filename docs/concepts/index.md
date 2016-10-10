@@ -176,6 +176,11 @@ The ``Fetch Artifact`` task provides one configuration option - ``Run If Conditi
 
 ### Fetch Artifact Tasks Scenarios
 
+* [Add ](/configuration/#)
+* [Delete ](/configuration/#)
+* [Configure](/configuration/#)
+
+
 
 Job
 -----
