@@ -124,8 +124,8 @@ The ``Upload Artifact`` task provides two attributes: ``Source`` and ``Destinati
 ``Source``  - Path to ``Artifact``.  
 ``Destination`` - Path to server destination where artifacts to be stored (optional).
 
-Upload Artifact task uses relative paths.   The ``Agent`` takes the artifact from its working directory   
-and uploads it to a  ``Server`` destination. Artifact must be  must be on the agents directory in order
+Upload Artifact task uses relative paths. ``Agent`` uploads artifact to ``Server``.
+Artifact must be  must be on the agents directory in order
 to be uploaded to the ``Server``.   
 
 Full path to ``Source`` - ``Agent/Pipelines/<PipelineName>/``.   
