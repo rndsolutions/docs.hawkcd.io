@@ -243,9 +243,9 @@ Click <a href="/configuration/#configure-pipeline"> Configure Pipeline </a> to s
 <br />
 <br />
 
-Here is a list of options you can do. <br />
-> <a href ="/configuration#create-a-pipeline"> Add new Pipeline </a> <br />
-<a href ="/configuration/#configure-pipeline"> Configure Pipeline </a> <br />
+### Pipeline Scenarios
+<a href ="/configuration#create-a-pipeline"> Add new Pipeline </a> 
+<a href ="/configuration/#configure-pipeline"> Configure Pipeline </a>
 <a href ="#"> Delete Pipeline </a>
 
 <br />

@@ -45,6 +45,114 @@ Stages:
 
 * ``Automatic pipeline scheduling`` - when set to true, the pipeline is triggered when material changes e.g. a new commit is pushed to the remote repository
 
+Pipeline Configurations allows adding more Stages/Jobs/Tasks.
+
+### Add Stage
+
+ * Go to Pipeline Screen
+ * Select ``Pipeline``
+ * Press ``configure`` button.
+ * Press ``Add Stage`` button.
+ * Fill out all fields.
+ * Press ``Add Stage``.
+
+### Configure Stage
+#### Configure Stage Settings
+
+ * Go to Pipeline Screen
+ * Select ``Pipeline``.
+ * Press ``configure`` button.
+ * Select ``Stage``.
+ * Update ``Stage Name`` or ``Stage Trigger``.
+ * Press ``Update``.
+
+
+#### Configure Environment Variable
+
+* Go to Pipeline Screen
+* Select ``Pipeline``.
+* Press ``configure`` button.
+* Select ``Stage`` and go to ``Environment Variable`` tab.
+* Press ``Add Environment Variable``
+* Fill out form and press ``Add Value``.  
+Environment Variable can be also edited and deleted from ``Controls`` in the ``Environment Variable`` tab.
+
+
+### Delete Stage
+
+* Go to Pipeline Screen
+* Select ``Pipeline``.
+* Press ``configure`` button.
+* Choose ``Stage`` and press ``Delete`` in Controls section.
+
+
+### Add Job
+
+* Go to Pipeline Screen
+* Select ``Pipeline``.
+* Press ``configure`` button.
+* Select ``Stage``
+* Press ``Add Job``
+* Fill in ``Job Name`` and select ``Task``.
+* Fill out task form and press ``Add Job``.
+
+### Delete Job
+
+* Go to Pipeline Screen
+* Select ``Pipeline``.
+* Press ``configure`` button.
+* Select ``Stage``
+* Press ``Delete`` in Controls section.
+
+### Configure Job
+#### Update Job Name
+* Go to Pipeline Screen
+* Select ``Pipeline``.
+* Press ``configure`` button.
+* Select ``Job`` from ``Stage``.
+* Go to ``Job Setting`` tab.
+* Fill in ``Job Name`` and press ``Update``.
+
+#### Add Environment Variable
+* Go to Pipeline Screen
+* Select ``Pipeline``.
+* Press ``configure`` button.
+* Select ``Job`` from ``Stage``.
+* Go to ``Environment Variables`` tab and press ``Add Environment Variable``.
+* Fill in ``Name`` and ``Value`` fields and press ``Add Value``.
+Environemt Variables can be also edited and deleted from ``Controls`` in the ``Environment Variables`` tab.
+
+
+#### Add Resource
+* Go to Pipeline Screen
+* Select ``Pipeline``.
+* Press ``configure`` button.
+* Select ``Job`` from ``Stage``.
+* Go to ``Resources`` tab and press ``Add Resource``.
+* Add resource and press ``Add Resource``.      
+Resources can be also edited and deleted from ``Controls`` in the ``Resources`` tab.
+
+### Add Task
+* Go to Pipeline Screen
+* Select ``Pipeline``.
+* Press ``configure`` button.
+* Select ``Job`` from ``Stages`` and press ``Add Task``.
+* Select ``Task Type``, fill in all fields and press ``Add Task``.  
+Tasks can be also edited and deleted from ``Controls`` in the ``Tasks`` tab.
+
+### Delete Task
+* Go to Pipeline Screen
+* Select ``Pipeline``.
+* Press ``configure`` button.
+* Select ``Job`` from ``Stages``.
+* Press ``Delete`` in ``Controls`` section.
+
+### Configure Task
+* Go to selected ``Job``.
+* Press ``Edit`` on selected ``Job``.
+* Make changes and press ``Edit Task``.
+
+
 Running a Pipeline
 --------------------
 
