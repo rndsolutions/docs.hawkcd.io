@@ -77,9 +77,9 @@ The ``Exec Task`` provides two configuration options:
 
 ### Exec Tasks Scenarios
 
-* [Add ](/configuration/#add-delete-exec-task)
-* [Delete ](/configuration/#delete-exec-task)
-* [Configure](/configuration/#configure-exec-task)
+* [Add ](/configuration/#add-task)
+* [Delete ](/configuration/#delete-task)
+* [Configure](/configuration/#configure-task)
 
 
 Fetch Material
@@ -151,35 +151,15 @@ The ``Upload Artifact`` task provides one configuration option - ``Run If Condit
 
 
 
-Fetch Artifact
+Fetch Artifacts
 ---------------
 
 ### Overview
-The ``Fetch Artifact`` task allows users to download artifacts from the server repository into a ``HawkCD`` agent sandbox.
+The ``Fetch Artifacts`` task allows users to download artifacts from the server repository into a ``HawkCD`` agent sandbox.
 
 ### How does it work?
-``Fetch Artifact`` downloads artifact from ``Server`` to agent sandbox.  
-The fetch artifacts contains the following attributes: ``Pipeline``, ``Run``, ``Source`` and ``Destination``.
-
-* ``Pipeline`` - Which pipeline.
-* ``Run`` - Which pipeline run.
-* ``Source``  - Path to ``Artifact``.  
-* ``Destination`` - Path to server destination where artifacts to be stored (optional).
 
 ### Configuration options
-The ``Fetch Artifact`` task provides one configuration option - ``Run If Condition``
-
- ``Run If Condition`` - runs under three different scenarios: ``Passed``, ``Failed`` and ``Any``.
- If option ``Passed`` (default) is chosen, the execution of the current task will be continued only in case the previous task completed successfully - ``Passed``
- If the option ``Failed`` is chosen it will be run only in case the previous task is marked as ``Failed``.
- A task set to ``Any`` will always run, regardless of previous task status (``Passed`` | ``Failed``).
-
-### Fetch Artifact Tasks Scenarios
-
-* [Add ](/configuration/#)
-* [Delete ](/configuration/#)
-* [Configure](/configuration/#)
-
 
 
 Job
@@ -214,15 +194,41 @@ Stage
 -------
 ### Overview
 A ``Stage`` can be thought as a container for ``Jobs``. While ``Jobs`` are run in parallel, ``Stages`` are always run in sequence. If a ``Job`` from particular stage fails, then the Stage is considered failed as well.
-
 However, since Jobs are independent of each other, all other Jobs in the Stage will also be run. Stages that belong to a certain pipeline are always run in sequence.
 
 ### How does it work?
+Stages are major component when comes to automation release processing. Each step of building new feature into a large project
+may be divided into few steps/stages:
 
+* Check-in    
+* Assemble    
+* Acceptance
+* Performance
+* Production Deployment
 
-
+Since stages run in a sequence, each of the previous stages (e.g. steps) must complete successfully
+in order next stage to start. If a ``Stage`` fails next ``Stage`` does not start, ``Pipeline`` is set to FAILED.
 
 ### Configure Options
+
+Each `Stage` has a ``Stage Trigger`` reason: ``Manual`` and ``On Success``.
+
+When ``Manual`` stage  trigger is selected, stage pauses and awaits to be run manually. Pipeline status is set to AWAITING.
+
+``On Success`` start stage when previous stage has ``PASSED`` successfully. If previous stage fails, next stage does not start executing.
+Pipeline status is set to FAILED.
+
+Stages also have ``Environment Variables``, which can be overridden by jobs environment variables. To see how environment variables work, please
+check [``environment variables section``](/concepts/#environment-variables).
+
+
+### Stage Scenarios
+
+* [Add ](/configuration/#add-stage)
+* [Delete ](/configuration/#delete-stage)
+* [Configure](/configuration/#configure-stage)
+
+
 
 
 
@@ -263,9 +269,9 @@ Click <a href="/configuration/#configure-pipeline"> Configure Pipeline </a> to s
 <br />
 <br />
 
-### Pipeline Scenarios
-<a href ="/configuration#create-a-pipeline"> Add new Pipeline </a> 
-<a href ="/configuration/#configure-pipeline"> Configure Pipeline </a>
+### Pipekub
+> <a href ="/configuration#create-a-pipeline"> Add new Pipeline </a> <br />
+<a href ="/configuration/#configure-pipeline"> Configure Pipeline </a> <br />
 <a href ="#"> Delete Pipeline </a>
 
 <br />
