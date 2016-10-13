@@ -1,7 +1,7 @@
 
 Continuous Delivery Overview
 ==============================
-Continuous Delivery (CD) approach to shipping software has been around for few years now, implemented in teams allows them to produce software in rapid cycles, ensuring that the software can be reliably released at any time. It aims at building, testing, and releasing software faster and more frequently. The approach helps reduce the cost, time, and risk of delivering changes by allowing for more incremental updates to applications in production. HawkCD helps teams to adopt CD practices in the Software Development Life Cycle (SDLC) by giving them the freedom to create CD Pipelines to model their release processes.
+The `Continuous Delivery` (CD) approach to shipping software has been around for few years now, implemented in teams allows them to produce software in rapid cycles, ensuring that the software can be reliably released at any time. It aims at building, testing, and releasing software faster and more frequently. The approach helps reduce the cost, time, and risk of delivering changes by allowing for more incremental updates to applications in production. `HawkCD` helps teams to adopt CD practices in the Software Development Life Cycle (SDLC) by giving them the freedom to create CD Pipelines to model their release processes.
 
 Anatomy of a CD Pipeline
 --------------------------
@@ -10,23 +10,36 @@ Anatomy of a CD Pipeline
 
 The CD Pipeline breaks down a software delivery process into Stages. The aim of each Stage is to verify the software quality from a different angle, validate the functionality and prevent errors from affecting users. The CD Pipeline provides feedback to the team and visibility into the flow of changes to everyone involved in the delivery.
 
-There is no such thing as *Standard Deployment Pipeline*, however a typical CD Pipeline will include some, or all, of the following stages: Check-in, Acceptance, Performance Tests.
+There is no such thing as *Standard Deployment Pipeline*, however a typical CD Pipeline will include some, or all, of the following stages: Check-in, Acceptance, Performance Tests, Production Deployment.
 
 ![Screenshot](../img/CD_Pipeline1.png)
 
 Server Objects & Concepts
 =========================
-The following section represents a deep dive into the HawkCD Server concepts, components and objects.
+The following section represents a deep dive into the `HawkCD` Server concepts, components and objects.
 
-A Task is an action that is performed on a server/machine or inside a container where a HawkCD agent is installed. HawkCD offers 4 types of tasks.
+Task
+--------------
+### Overview
+
+A Task is an action that is performed on a server/machine or inside a container where a `HawkCD` Agent is installed. Tasks are contained inside Jobs and are always executed in the order added to the Job. `HawkCD` offers four types of Tasks - `Exec`, `Fetch Material`, `Upload Artifact` and `Fetch Artifact`.
+
+### Configuration Options
+
+All Tasks have a `Run If Condition` option. `Passed` (set by default), `Failed` or `Any` are the selectable choices.
+
+* `Passed` - if selected, the Task will be executed only in case the one before it completed successfully. If the Task is to be executed first the option is ignored.
+* `Failed` - if selected, the Task will be executed only ...
+* `Any` - if selected, the Task will be executed regardless of the status of the previous one.
 
 Exec
 --------------
 ### Overview
 
-The `Exec Task` is the most universal type of Task HawkCD offers. It allows you to do just about anything you can think of on a given Server where the Task is executed. You can run scripts (e.g., PowerShell, Shell), execute commands, etc.
+The `Exec Task` is the most universal type of Task `HawkCD` offers. It allows you to do just about anything you can think of on a given Server where the Task is executed. You can run scripts (e.g., PowerShell, Shell), execute commands, etc.
 
 ### How does it work?
+
 The `Exec Task` contains the following attributes: `Command`, `Arguments` and `Working Dir`.
 
 * `Command` - executable name to run, usually for Linux -`/bin/bash`, for Windows `cmd`
@@ -42,29 +55,20 @@ Example commands:
   /bin/bash -c cp -r dir1/  dir2
 
 ```
-The above command runs on Linux based systems the ``bash`` executable and passes the ``cp`` command with arguments to it
+The above command runs on Linux based systems the `bash` executable and passes the `cp` command with arguments to it
 
   <div class="admonition note">
   <p class="admonition-title">Note</p>
   <p>
-  You can think of HawkCD Exec Task as universal command executor. In fact it can run any command via ``cmd`` or ``/bin/bash``, ``/bin/sh`` as long as it's in the environment path (system | user) on the system, otherwise the ``Command`` value must be direct path to targeted executable on the system
+  You can think of `HawkCD` `Exec Task` as a universal command executor. In fact it can run any command via `cmd` or `/bin/bash`, `/bin/sh` as long as it's in the environment path (system | user) of the system, otherwise the `Command` value must be a direct path to the targeted executable on the system.
   </p>
   </div>
 
-
-
 ### Configuration Options
 
-The ``Exec Task`` provides two configuration options:
+The `Exec Task` provides a single configuration option:
 
-* ``Run If Condition``
 * ``Ignore Errors ``
-
-
- ``Run If Condition`` - runs under three different scenarios: ``Passed``, ``Failed`` and ``Any``.
- If option ``Passed`` (default) is chosen, the execution of the current task will be continued only in case the previous task completed successfully - ``Passed``
- If the option ``Failed`` is chosen it will be run only in case the previous task is marked as ``Failed``.
- A task set to ``Any`` will always run, regardless of previous task status (``Passed`` | ``Failed``).
 
  ``Ignore Errors`` - Ignore errors, if there are any, sets task status to ``Passed``.
 
