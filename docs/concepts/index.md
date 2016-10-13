@@ -298,8 +298,28 @@ Materials
 ---------
 
 #### Overview
+Materials represent ``code`` (git) ``artifact`` (Nuget) repositories. For every pipeline there
+should be at least one material defined.
+
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>
+At the moment HawkCD supports only materials of type git, but feature version will provide
+support for other types of materials.
+</p>
+</div>
+
+
 #### How it works?
+A ``Material`` is cause for a Pipeline to run. ``HawkCD`` automatically tracks your material and fetches the latest
+version of it. At the moment ``HawkCD`` supports only one ``material`` per pipeline, but in feature version multiple
+materials could be assigned to a single pipeline.
+
 #### Configuration Options
+Materials contains the following attributes: ``Material Name``, ``Git Url``, ``Git Branch`` and ``Credentials``.
+
+ * ``Material Name`` - with which identifies on the HawkCD server.
+ * ``Git Url`` - URL to project git repository.
 
 Resource | Tags
 ---------------
