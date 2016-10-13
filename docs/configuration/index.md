@@ -1,11 +1,25 @@
-
-Configure HawkCD
+HawkCD Configuration
 ==================
+
+Accessing the server (Login)
+--------
+Accessing a fresh installation of HawkCD comes with pre-defined administrator account
+
+* ``user`` : admin@admin.com, ``password``:admin
+* ``server url``: http://localhost:8080
+
+
+<div class="admonition warning">
+<p class="admonition-title">WARNING</p>
+<p>
+  It is highly recommended to change the default password of the administrator account after the first login
+</p>
+</div>
+
+
 
 Set-up a Pipeline
 -----------------
-
-### Steps by Step
 
 * Chose a Pipeline Group
 * In the right top corner click "Add" button
