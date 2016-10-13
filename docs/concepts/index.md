@@ -282,21 +282,58 @@ Click [Configure Pipeline](/configuration/#pipeline-configuration) to see how to
 
 
 ### Pipeline Scenarios
+
 * [Add new Pipeline](/)
 * [Configure Pipeline](/)
 * [Delete Pipeline](/)
 
 
-Pipeline Groups
+
+
+Pipeline Group
 ---------------
 
 #### Overview
+``Pipeline Group`` can be thought as a container for Pipelines. Each ``Pipeline`` belongs to a group.
+
+
 #### How it works?
+Grouping pipelines helps managing, sharing and restricting pipelines among teams.  
+Each ``Pipeline Group`` can be configured to belong to a specif QA, Software Engineers,  
+DevOps or any other team. Each rule of the ``Pipeline Group`` applies to all the  ``Pipelines`` in the group.  
+
+
+Pipeline Group example:
+
+
+//
+
 #### Configuration Options
+There are two options available to  a ``Pipeline Group``:    
+
+ * ``Assign Pipeline`` - Assigns unassigned  or pipeline from another pipeline group to the current pipeline group.   
+
+ * ``UnAssign Pipeline``. Unassigns pipeline. Pipeline moves to ``UnassignedPipelines`` pipeline group.
+
+### Pipeline Scenarios
+ * [Add new Pipeline Group](/)
+ * [Assign Pipeline Group](/)
+ * [Unassign Pipeline](/)
+ * [Delete Pipeline Group](/)
+
+ <div class="admonition note">
+ <p class="admonition-title">Note</p>
+ <p>
+ ``Pipeline Group`` can be deleted only if there is no ``Pipeline`` assigned to it.
+ </p>
+ </div>
+
+
+
 
 Materials
 ---------
-
+grouping pipelines helps your work manage, share and restrict pipelines among teams.
 #### Overview
 Materials represent ``code`` (git) ``artifact`` (Nuget) repositories. For every pipeline there
 should be at least one material defined.
