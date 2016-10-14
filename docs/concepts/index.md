@@ -18,20 +18,20 @@ Server Objects & Concepts
 =========================
 The following section represents a deep dive into the HawkCD Server concepts, components and objects.
 
-A task is an action that is performed on a server/machine or inside container where HawkCD agent is installed. HawkCD offers 4 types of tasks
+
+A task is an action that is performed on given server/machine or inside container where HawkCD agent is installed. HawkCD supports 4 types of tasks
 
 Exec
 --------------
 ### Overview
-
-The "Exec" task is the most universal type of tasks HawkCD offers. It allows you to do just anything you can think of on a given server where the task is executed on. You can run script, e.g. PowerShell, Shell, execute commands etc.
+The ``Exec`` task is the most universal type of tasks HawkCD provides. It allows to do just anything you can think of on a server where the task is executed on. You can run script, e.g. ``PowerShell``, ``Shell``, execute commands etc.
 
 ### How does it work?
 The exec task contains the following attributes: ``Command``, ``Arguments`` and ``Working Dir``.
 
 * ``Command`` - executable name to run, usually for Linux -``/bin/bash``, for Windows ``cmd``
 * ``Arguments`` - arguments to be passed to the executable e.g. Linux - ``-c cp -r dir dir1`` , Windows ``/c echo %PAHT%``
-* ``Working Dir `` - the directory, the process to be run in
+* ``Working Dir `` - the directory, the process to be run into
 
 Example commands:
 
@@ -60,18 +60,21 @@ The ``Exec Task`` provides two configuration options:
 * ``Run If Condition``
 * ``Ignore Errors ``
 
+#### Run If Condition
 
  ``Run If Condition`` - runs under three different scenarios: ``Passed``, ``Failed`` and ``Any``.
  If option ``Passed`` (default) is chosen, the execution of the current task will be continued only in case the previous task completed successfully - ``Passed``
  If the option ``Failed`` is chosen it will be run only in case the previous task is marked as ``Failed``.
  A task set to ``Any`` will always run, regardless of previous task status (``Passed`` | ``Failed``).
 
+#### Ignore Errors
+
  ``Ignore Errors`` - Ignore errors, if there are any, sets task status to ``Passed``.
 
  <div class="admonition warning">
  <p class="admonition-title">WARNING</p>
  <p>
- Be aware that [Task](#task) marked with *FAILED* will run only in case the previous task exits with failed code.
+ Be aware that``FAILED`` task will run only in case the previous task exits with status failed code, different than ``0``
  </p>
  </div>
 
@@ -87,21 +90,16 @@ Fetch Material
 
 ###Overview
 
-The ``Fetch Material`` task allows you to fetch already defined materials with the system. At the moment ``HawkCD`` supports only materials of type ``git`` meaning that you can define and fetch materials of type git only as input to your pipelines. Future versions it may support other types e.g. ``TFVC``, ``SVN`` etc. A common use case is when you need to build your source code but before doing it you need to fetch it on an agent first.
+The ``Fetch Material`` task allows to fetch already defined materials with the system. At the moment ``HawkCD`` supports only materials of type ``git`` meaning that you can define and fetch materials of type git only as input to your pipelines. Future versions it may support other types e.g. ``TFVC``, ``SVN`` etc. A common use case is when you need to build your source code but before doing it you need to fetch it on an agent first.
 
 ### How does it work?
 
-The Fetch Material task clones directly from projects source into ``Agent``. <br />
+The ``Fetch Material`` task clones git repository directly from projects source into ``HawkCD`` Server and Agent. <br />
 ``Fetch Materials`` task contains one attribute - [``material``](/#materials). <br /> </br >
 At the moment ``HawkCD`` supports only one material per pipeline. Multiple materials (e.g. sources) may be added into feature versions.
 
 ### Configuration Options
-``Fetch Material`` task provides one configuration option - ``Run If Condition``.
-
-``Run If Condition`` - runs under three different scenarios: ``Passed``, ``Failed`` and ``Any``.
-If option ``Passed`` (default) is chosen, the execution of the current task will be continued only in case the previous task completed successfully - ``Passed``
-If the option ``Failed`` is chosen it will be run only in case the previous task is marked as ``Failed``.
-A task set to ``Any`` will always run, regardless of previous task status (``Passed`` | ``Failed``).
+``Fetch Material`` task provides one configuration option - [Run If Condition](/concepts/#run-if-condition)
 
 ### Fetch Material Tasks Scenarios
 
@@ -114,7 +112,7 @@ Upload Artifact
 ----------------
 
 ### Overview
-The Upload Artifacts task respectively allows you to upload build artifacts to the server. A common use case is when you compile a source code to store the build output to the server via using the Upload Artifacts task. then using Fetch Artifacts to deploy it on appropriate agent.
+The ``Upload Artifacts`` task allows uploading build artifacts to HawkCD server. A common use case is when source code is compiled and the build output is stored to the server via the ``Upload Artifacts`` task, then using ``Fetch Artifacts`` to deploy artifacts to appropriate agent.
 
 ### How does it works?
 
@@ -124,7 +122,7 @@ The ``Upload Artifact`` task provides two attributes: ``Source`` and ``Destinati
 ``Source``  - Path to ``Artifact``.  
 ``Destination`` - Path to server destination where artifacts to be stored (optional).
 
-Upload Artifact task uses relative paths. ``Agent`` uploads artifact to ``Server``.
+Upload Artifact task uses relative paths to the agent sandbox.
 Artifact must be  must be on the agents directory in order
 to be uploaded to the ``Server``.   
 
@@ -135,7 +133,7 @@ Full path to ``Destination`` - ``Server/Arttifacts/<PipelineName>/<PipelineRun>/
 
 ### Configuration Options
 
-The ``Upload Artifact`` task provides one configuration option - ``Run If Condition``
+The ``Upload Artifact`` task provides one configuration option - [``Run If Condition``]()
 
  ``Run If Condition`` - runs under three different scenarios: ``Passed``, ``Failed`` and ``Any``.
  If option ``Passed`` (default) is chosen, the execution of the current task will be continued only in case the previous task completed successfully - ``Passed``
