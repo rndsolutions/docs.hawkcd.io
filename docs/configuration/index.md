@@ -1,11 +1,25 @@
-
-Configure HawkCD
+HawkCD Configuration
 ==================
+
+Accessing the server (Login)
+--------
+Accessing a fresh installation of HawkCD comes with pre-defined administrator account
+
+* ``user`` : admin@admin.com, ``password``:admin
+* ``server url``: http://localhost:8080
+
+
+<div class="admonition warning">
+<p class="admonition-title">WARNING</p>
+<p>
+  It is highly recommended to change the default password of the administrator account after the first login
+</p>
+</div>
+
+
 
 Set-up a Pipeline
 -----------------
-
-### Steps by Step
 
 * Chose a Pipeline Group
 * In the right top corner click "Add" button
@@ -44,6 +58,161 @@ Stages:
 #### Configuration Options
 
 * ``Automatic pipeline scheduling`` - when set to true, the pipeline is triggered when material changes e.g. a new commit is pushed to the remote repository
+
+Pipeline Configurations allows adding more Stages/Jobs/Tasks.
+
+### Add Stage
+A Stage consists of multiple jobs, each of which can run independently of the others.   
+To learn more about stages check [``Stage``](/concepts/#stage) concept section.
+
+ * Go to Pipeline Screen
+ * Select ``Pipeline``
+ * Press ``configure`` button.
+ * Press ``Add Stage`` button.
+ * Fill out all fields.
+ * Press ``Add Stage``.
+
+### Configure Stage
+Stage provides few configuration options such as add, update, delete and environment variables.
+#### Configure Stage Settings
+
+ * Go to Pipeline Screen
+ * Select ``Pipeline``.
+ * Press ``configure`` button.
+ * Select ``Stage``.
+ * Update ``Stage Name`` or ``Stage Trigger``.
+ * Press ``Update``.
+
+
+#### Configure Environment Variable
+Environment Variables are user-defined variables that are defined in the configuration.  
+To learn more about _EV_ check [``Environment Variables``](/concepts/#environment-variables) concept section.  
+
+* Go to Pipeline Screen
+* Select ``Pipeline``.
+* Press ``configure`` button.
+* Select ``Stage`` and go to ``Environment Variable`` tab.
+* Press ``Add Environment Variable``
+* Fill out form and press ``Add Value``.  
+Environment Variable can be also edited and deleted from ``Controls`` in the ``Environment Variable`` tab.
+
+
+### Delete Stage
+
+* Go to Pipeline Screen
+* Select ``Pipeline``.
+* Press ``configure`` button.
+* Choose ``Stage`` and press ``Delete`` in Controls section.
+
+  <div class="admonition note">
+  <p class="admonition-title">Note</p>
+Last ``Stage`` object in a ``Pipeline`` can not be deleted. The same applies for last ``Job`` or last ``Task``.
+  </div>
+
+
+### Add Job
+A job consists of multiple tasks, each of which will be run in order. If a task in a job fails,
+then the job is considered failed, and unless specified otherwise, the rest of the tasks in the job will not be run.  
+
+To learn more about jobs check the [``Job``](/concepts/#job) concept section.  
+
+
+* Go to Pipeline Screen
+* Select ``Pipeline``.
+* Press ``configure`` button.
+* Select ``Stage``
+* Press ``Add Job``
+* Fill in ``Job Name`` and select ``Task``.
+* Fill out task form and press ``Add Job``.
+
+### Delete Job
+
+* Go to Pipeline Screen
+* Select ``Pipeline``.
+* Press ``configure`` button.
+* Select ``Stage``
+* Press ``Delete`` in Controls section.
+
+ <div class="admonition note">
+ <p class="admonition-title">Note</p>
+Last ``Job`` object in a ``Stage`` can not be deleted. The same applies for last ``Task`` or last ``Stage``.
+</div>
+
+### Configure Job
+Jobs provides multiple configuration options such as adding, deleting and updating task within job and the job itself.
+``Resources`` and ``Environment Variable`` can be also added to job. To learn more about see concept sections.
+#### Update Job Name
+* Go to Pipeline Screen
+* Select ``Pipeline``.
+* Press ``configure`` button.
+* Select ``Job`` from ``Stage``.
+* Go to ``Job Setting`` tab.
+* Fill in ``Job Name`` and press ``Update``.
+
+#### Add Environment Variable
+Environment Variables" are user-defined variables that are defined in the configuration.
+Environment variables can be defined at multiple levels: Within ``Job``, ``Pipeline``, ``Stage`` and ``Task``.  
+To learn more about Environment Variables see [``Environment Variables concept section``](/concepts/#environment-variables)
+
+* Go to Pipeline Screen
+* Select ``Pipeline``.
+* Press ``configure`` button.
+* Select ``Job`` from ``Stage``.
+* Go to ``Environment Variables`` tab and press ``Add Environment Variable``.
+* Fill in ``Name`` and ``Value`` fields and press ``Add Value``.
+Environemt Variables can be also edited and deleted from ``Controls`` in the ``Environment Variables`` tab.
+
+
+#### Add Resource
+
+Agents and jobs can be enhanced with "Resources". Resources are free-form tags, that help decide which agents are capable of picking up specific jobs.  
+
+To learn more about Resources see [``Resource | Tag``](/concepts/#resource-tags) section in Concepts.
+
+* Go to Pipeline Screen
+* Select ``Pipeline``.
+* Press ``configure`` button.
+* Select ``Job`` from ``Stage``.
+* Go to ``Resources`` tab and press ``Add Resource``.
+* Add resource and press ``Add Resource``.      
+Resources can be also edited and deleted from ``Controls`` in the ``Resources`` tab.
+
+### Add Task
+
+A task is an action that is performed on a server/machine or inside container where HawkCD agent is installed.
+HawkCD offers 4 types of tasks: ``Exec``,  ``Fetch Material``, ``Upload Artifact`` and ``Fetch Artifact``.
+
+To learn more about tasks, see [``Task``](/concepts/#server-objects-concepts)  section in Concepts.
+
+* Go to Pipeline Screen
+* Select ``Pipeline``.
+* Press ``configure`` button.
+* Select ``Job`` from ``Stages`` and press ``Add Task``.
+* Select ``Task Type``, fill in all fields and press ``Add Task``.  
+Tasks can be also edited and deleted from ``Controls`` in the ``Tasks`` tab.
+
+### Delete Task
+* Go to Pipeline Screen
+* Select ``Pipeline``.
+* Press ``configure`` button.
+* Select ``Job`` from ``Stages``.
+* Press ``Delete`` in ``Controls`` section.
+
+ <div class="admonition note">
+ <p class="admonition-title">Note</p>
+Last ``Task`` object in a ``Job`` can not be deleted. The same applies for last ``Job`` or last ``Stage``.
+</div>
+
+### Configure Task
+
+All tasks have same configuration options except ``Exec`` task, which has additional ``Ignore Errors`` option.
+Every task in HawkCD have ``Run If Condition`` option.  
+To learn how it works, please see [``Concepts``](/concepts)
+
+* Go to selected ``Job``.
+* Press ``Edit`` on selected ``Job``.
+* Make changes and press ``Edit Task``.
+
 
 Running a Pipeline
 --------------------

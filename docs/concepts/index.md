@@ -35,6 +35,7 @@ All Tasks have a `Run If Condition` option. `Passed` (set by default), `Failed` 
 Exec
 --------------
 ### Overview
+The ``Exec`` task is the most universal type of tasks HawkCD provides. It allows to do just anything you can think of on a server where the task is executed on. You can run script, e.g. ``PowerShell``, ``Shell``, execute commands etc.
 
 The `Exec Task` is the most universal type of Task `HawkCD` offers. It allows you to do just about anything you can think of on a given Server where the Task is executed. You can run scripts (e.g., PowerShell, Shell), execute commands, etc.
 
@@ -75,15 +76,15 @@ The `Exec Task` provides a single configuration option:
  <div class="admonition warning">
  <p class="admonition-title">WARNING</p>
  <p>
- Be aware that [Task](#task) marked with *FAILED* will run only in case the previous task exits with failed code.
+ Be aware that``FAILED`` task will run only in case the previous task exits with status failed code, different than ``0``
  </p>
  </div>
 
 ### Exec Tasks Scenarios
 
-* [Add ](/configuration/#add-delete-exec-task)
-* [Delete ](/configuration/#delete-exec-task)
-* [Configure](/configuration/#configure-exec-task)
+* [Add ](/configuration/#add-task)
+* [Delete ](/configuration/#delete-task)
+* [Configure](/configuration/#configure-task)
 
 
 Fetch Material
@@ -91,21 +92,16 @@ Fetch Material
 
 ###Overview
 
-The ``Fetch Material`` task allows you to fetch already defined materials with the system. At the moment ``HawkCD`` supports only materials of type ``git`` meaning that you can define and fetch materials of type git only as input to your pipelines. Future versions it may support other types e.g. ``TFVC``, ``SVN`` etc. A common use case is when you need to build your source code but before doing it you need to fetch it on an agent first.
+The ``Fetch Material`` task allows to fetch already defined materials with the system. At the moment ``HawkCD`` supports only materials of type ``git`` meaning that you can define and fetch materials of type git only as input to your pipelines. Future versions it may support other types e.g. ``TFVC``, ``SVN`` etc. A common use case is when you need to build your source code but before doing it you need to fetch it on an agent first.
 
 ### How does it work?
 
-The Fetch Material task clones directly from projects source into ``Agent``. <br />
+The ``Fetch Material`` task clones git repository directly from projects source into ``HawkCD`` Server and Agent. <br />
 ``Fetch Materials`` task contains one attribute - [``material``](/#materials). <br /> </br >
 At the moment ``HawkCD`` supports only one material per pipeline. Multiple materials (e.g. sources) may be added into feature versions.
 
 ### Configuration Options
-``Fetch Material`` task provides one configuration option - ``Run If Condition``.
-
-``Run If Condition`` - runs under three different scenarios: ``Passed``, ``Failed`` and ``Any``.
-If option ``Passed`` (default) is chosen, the execution of the current task will be continued only in case the previous task completed successfully - ``Passed``
-If the option ``Failed`` is chosen it will be run only in case the previous task is marked as ``Failed``.
-A task set to ``Any`` will always run, regardless of previous task status (``Passed`` | ``Failed``).
+``Fetch Material`` task provides one configuration option - [Run If Condition](/concepts/#run-if-condition)
 
 ### Fetch Material Tasks Scenarios
 
@@ -118,7 +114,7 @@ Upload Artifact
 ----------------
 
 ### Overview
-The Upload Artifacts task respectively allows you to upload build artifacts to the server. A common use case is when you compile a source code to store the build output to the server via using the Upload Artifacts task. then using Fetch Artifacts to deploy it on appropriate agent.
+The ``Upload Artifacts`` task allows uploading build artifacts to HawkCD server. A common use case is when source code is compiled and the build output is stored to the server via the ``Upload Artifacts`` task, then using ``Fetch Artifacts`` to deploy artifacts to appropriate agent.
 
 ### How does it works?
 
@@ -128,7 +124,7 @@ The ``Upload Artifact`` task provides two attributes: ``Source`` and ``Destinati
 ``Source``  - Path to ``Artifact``.  
 ``Destination`` - Path to server destination where artifacts to be stored (optional).
 
-Upload Artifact task uses relative paths. ``Agent`` uploads artifact to ``Server``.
+Upload Artifact task uses relative paths to the agent sandbox.
 Artifact must be  must be on the agents directory in order
 to be uploaded to the ``Server``.   
 
@@ -139,7 +135,7 @@ Full path to ``Destination`` - ``Server/Arttifacts/<PipelineName>/<PipelineRun>/
 
 ### Configuration Options
 
-The ``Upload Artifact`` task provides one configuration option - ``Run If Condition``
+The ``Upload Artifact`` task provides one configuration option - [``Run If Condition``]()
 
  ``Run If Condition`` - runs under three different scenarios: ``Passed``, ``Failed`` and ``Any``.
  If option ``Passed`` (default) is chosen, the execution of the current task will be continued only in case the previous task completed successfully - ``Passed``
@@ -155,9 +151,8 @@ The ``Upload Artifact`` task provides one configuration option - ``Run If Condit
 
 
 
-Fetch Artifact
+Fetch Artifacts
 ---------------
-
 ### Overview
 The ``Fetch Artifact`` task allows users to download artifacts from the server repository into a ``HawkCD`` agent sandbox.
 
@@ -183,8 +178,6 @@ The ``Fetch Artifact`` task provides one configuration option - ``Run If Conditi
 * [Add ](/configuration/#)
 * [Delete ](/configuration/#)
 * [Configure](/configuration/#)
-
-
 
 Job
 -----
@@ -218,17 +211,39 @@ Stage
 -------
 ### Overview
 A ``Stage`` can be thought as a container for ``Jobs``. While ``Jobs`` are run in parallel, ``Stages`` are always run in sequence. If a ``Job`` from particular stage fails, then the Stage is considered failed as well.
-
 However, since Jobs are independent of each other, all other Jobs in the Stage will also be run. Stages that belong to a certain pipeline are always run in sequence.
 
 ### How does it work?
+Stages are major component when comes to automation release processing. Each step of building new feature into a large project
+may be divided into few steps/stages:
 
+* Check-in    
+* Assemble    
+* Acceptance
+* Performance
+* Production Deployment
 
-
+Since stages run in a sequence, each of the previous stages (e.g. steps) must complete successfully
+in order next stage to start. If a ``Stage`` fails next ``Stage`` does not start, ``Pipeline`` is set to FAILED.
 
 ### Configure Options
 
+Each `Stage` has a ``Stage Trigger`` reason: ``Manual`` and ``On Success``.
 
+When ``Manual`` stage  trigger is selected, stage pauses and awaits to be run manually. Pipeline status is set to AWAITING.
+
+``On Success`` start stage when previous stage has ``PASSED`` successfully. If previous stage fails, next stage does not start executing.
+Pipeline status is set to FAILED.
+
+Stages also have ``Environment Variables``, which can be overridden by jobs environment variables. To see how environment variables work, please
+check [``environment variables section``](/concepts/#environment-variables).
+
+
+### Stage Scenarios
+
+* [Add ](/configuration/#add-stage)
+* [Delete ](/configuration/#delete-stage)
+* [Configure](/configuration/#configure-stage)
 
 Pipeline
 ---------
@@ -238,14 +253,14 @@ A ``Pipeline`` consists of multiple Stages, each of which is run in order. If a 
 
 ###How does it work?
 
-We briefly showed you the <a href="#anatomy-of-a-cd-pipeline"> Anatomy of a Pipeline </a>.<br />
-All of your Pipelines will have a set of Stages which will have a set of Jobs which will have a set of Tasks. Task are what gets things done.
+We briefly view  [Anatomy of a Pipeline](/concepts/#anatomy-of-a-cd-pipeline) .<br />
+All Pipelines have a set of Stages which have a set of Jobs which have a set of Tasks.
 
-There are four different types of tasks in ``HawkCD`` - <a href="#">Exec</a>,<a href="#"> Fetch Artifact</a>, <a href="#">Fetch Material</a> and <a href="#">Upload Artifact</a>. In order your Pipeline run to be set to
-<a href="#statuses">status </a> PASSED, each of your task's action must complete successfully, unless the task is marked otherwise with <a href="#"> Ignore Errors</a> option. <br />
+There are four different types of tasks in ``HawkCD`` - [Exec](/concepts/#exec), [Fetch Artifact](/), [Fetch Material](/) and [Upload Artifact](/). In order Pipeline run to be set to
+status _passed_, task action must complete successfully, unless the task is marked otherwise with [Ignore Errors](/) option.
 
-If all tasks in a certain Job complete successfully, the Job will be set to PASSED, all jobs must be with status PASSED for a Stage to pass. All Stages must pass for your Pipeline
-run to complete successfully. If a Task fail the Job in which is defined will fail, respectively the whole Pipeline will be set to FAILED. <br /> <br />
+If all tasks in a certain ``Job`` complete successfully, the ``Job`` is set to _passed_, all jobs must be with status _passed_ for a ``Stage`` to pass. All Stages must pass for ``Pipeline``
+run to complete successfully. If a ``Task`` fails the ``Job`` is set to _failed_ respectively ``Pipeline`` status is set to _failed_.
 
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -256,37 +271,92 @@ The Pipeline will be set to FAILED.
 </div>
 
 ### Configuration Options
-In HawkCD you can manage your Pipeline very easily.<br /><br />
-You can <a href="/configuration/#configure-pipeline">update pipeline name</a> or select <a href="#automatic-pipeline-scheduling"> Automatic pipeline scheduling</a>. You can <a href="#"> add Stage </a>, <a href="#"> add Job </a> or <a href="#">
-add Task </a> to already created Pipeline. Delete each one of them is also pretty straightforward, with just one click. Each Pipeline, Stage, Job or Task can be configured in details.<br /> <br />
+In HawkCD Pipelines can be managed very easily.   
 
 
-Click <a href="/configuration/#configure-pipeline"> Configure Pipeline </a> to see how to configure your  <a href="#environment-variables"> Environment Variables</a> or how to add <a href="#resource"> Resources. </a>
+You can [update pipeline name](/) or select [Automatic pipeline scheduling]. You can [add Stage](/), [add Job](/) or
+[add Task](/) to already created Pipeline. Delete each one of them is also pretty straightforward, with just one click. Each ``Pipeline``, ``Stage``, ``Job`` or ``Task`` can be configured in details.   
 
-<br />
-<br />
-<br />
 
-Here is a list of options you can do. <br />
-> <a href ="/configuration#create-a-pipeline"> Add new Pipeline </a> <br />
-<a href ="/configuration/#configure-pipeline"> Configure Pipeline </a> <br />
-<a href ="#"> Delete Pipeline </a>
+Click [Configure Pipeline](/configuration/#pipeline-configuration) to see how to configure [Environment Variables](/) or how to add [Resources](/).
 
-<br />
 
-Pipeline Groups
+### Pipeline Scenarios
+
+* [Add new Pipeline](/)
+* [Configure Pipeline](/)
+* [Delete Pipeline](/)
+
+
+
+
+Pipeline Group
 ---------------
 
 #### Overview
+``Pipeline Group`` can be thought as a container for Pipelines. Each ``Pipeline`` belongs to a group.
+
+
 #### How it works?
+Grouping pipelines helps managing, sharing and restricting pipelines among teams.  
+Each ``Pipeline Group`` can be configured to belong to a specif QA, Software Engineers,  
+DevOps or any other team. Each rule of the ``Pipeline Group`` applies to all the  ``Pipelines`` in the group.  
+
+
+Pipeline Group example:
+
+
+//
+
 #### Configuration Options
+There are two options available to  a ``Pipeline Group``:    
+
+ * ``Assign Pipeline`` - Assigns unassigned  or pipeline from another pipeline group to the current pipeline group.   
+
+ * ``UnAssign Pipeline``. Unassigns pipeline. Pipeline moves to ``UnassignedPipelines`` pipeline group.
+
+### Pipeline Scenarios
+ * [Add new Pipeline Group](/)
+ * [Assign Pipeline Group](/)
+ * [Unassign Pipeline](/)
+ * [Delete Pipeline Group](/)
+
+ <div class="admonition note">
+ <p class="admonition-title">Note</p>
+ <p>
+ ``Pipeline Group`` can be deleted only if there is no ``Pipeline`` assigned to it.
+ </p>
+ </div>
+
+
+
 
 Materials
 ---------
-
+grouping pipelines helps your work manage, share and restrict pipelines among teams.
 #### Overview
+Materials represent ``code`` (git) ``artifact`` (Nuget) repositories. For every pipeline there
+should be at least one material defined.
+
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>
+At the moment HawkCD supports only materials of type git, but feature version will provide
+support for other types of materials.
+</p>
+</div>
+
+
 #### How it works?
+A ``Material`` is cause for a Pipeline to run. ``HawkCD`` automatically tracks your material and fetches the latest
+version of it. At the moment ``HawkCD`` supports only one ``material`` per pipeline, but in feature version multiple
+materials could be assigned to a single pipeline.
+
 #### Configuration Options
+Materials contains the following attributes: ``Material Name``, ``Git Url``, ``Git Branch`` and ``Credentials``.
+
+ * ``Material Name`` - with which identifies on the HawkCD server.
+ * ``Git Url`` - URL to project git repository.
 
 Resource | Tags
 ---------------
