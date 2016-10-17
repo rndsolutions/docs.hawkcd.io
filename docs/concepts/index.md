@@ -18,6 +18,97 @@ Server Objects & Concepts
 =========================
 The following section represents a deep dive into the `HawkCD` Server concepts, components and objects.
 
+Pipeline
+---------
+### Overview
+
+As discussed previously the Pipeline allows crafting the entire application release process from start to finish. A Pipeline consists of Stages, which in turn consist of Jobs, which consist of Tasks.
+
+### How does it work?
+
+After a Pipeline is configured it is ready to be executed. Upon each execution a new Pipeline run is created with its own Status and RunId (starting from 1). When started, a Pipeline always begins with Status `IN_PROGRESS`. Upon successful completion its Status is set to `PASSED` and if something goes wrong and it doesn't manage to complete its Status is set to `FAILED`. </br>
+A Pipeline can be paused or canceled during its execution setting its Status to `PAUSED` or `CANCELED` respectively. </br>
+There is also a Status `AWAITING`, which means that an action by the user must be taken to continue the execution of the Pipeline.
+
+As mentioned before a Pipeline consists of multiple Stages, all of each are executed in sequence. If all Stages complete successfully, the Pipeline's Status is set to `PASSED`. If one fails, all Stages after it will not be run and the Pipeline's Status is set to `FAILED`.
+
+### Configuration Options
+
+The Pipeline provides the following configuration options:
+
+* `Automatic pipeline scheduling` - If selected, the Pipeline will trigger automatically, creating a new run, when its Material is updated.
+
+### Pipeline Scenarios
+
+* [Add new Pipeline](/configuration/#add-pipeline)
+* [Configure Pipeline](/configuration/#manage-pipelines)
+* [Delete Pipeline](/)
+
+Stage
+-------
+### Overview
+A ``Stage`` can be thought as a container for ``Jobs``. While ``Jobs`` are run in parallel, ``Stages`` are always run in sequence. If a ``Job`` from particular stage fails, then the Stage is considered failed as well.
+However, since Jobs are independent of each other, all other Jobs in the Stage will also be run. Stages that belong to a certain pipeline are always run in sequence.
+
+### How does it work?
+Stages are major component when comes to automation release processing. Each step of building new feature into a large project
+may be divided into few steps/stages:
+
+* Check-in    
+* Assemble    
+* Acceptance
+* Performance
+* Production Deployment
+
+Since stages run in a sequence, each of the previous stages (e.g. steps) must complete successfully
+in order next stage to start. If a ``Stage`` fails next ``Stage`` does not start, ``Pipeline`` is set to FAILED.
+
+### Configure Options
+
+Each `Stage` has a ``Stage Trigger`` reason: ``Manual`` and ``On Success``.
+
+When ``Manual`` stage  trigger is selected, stage pauses and awaits to be run manually. Pipeline status is set to AWAITING.
+
+``On Success`` start stage when previous stage has ``PASSED`` successfully. If previous stage fails, next stage does not start executing.
+Pipeline status is set to FAILED.
+
+Stages also have ``Environment Variables``, which can be overridden by jobs environment variables. To see how environment variables work, please
+check [``environment variables section``](/concepts/#environment-variables).
+
+
+### Stage Scenarios
+
+* [Add ](/configuration/#add-stage)
+* [Delete ](/configuration/#delete-stage)
+* [Configure](/configuration/#configure-stage)
+
+Job
+-----
+### Overview
+
+A Job consists of multiple Tasks. The Tasks always execute in order. If ``task`` inside a ``job`` fails, then the ``job`` is considered failed, and unless specified otherwise, the rest of the tasks in the will not be run.
+
+### How does it work?
+
+Unlike ``Tasks`` and ``Stages``, which are always executed in sequence, ``Jobs`` are executed in ``parallel`` among Agent's grid.
+``Resources``, also called ``tags``, can be used to route jobs to specific agents. When job doesn't have a concrete resource assigned, it considers all available agents registered with the server for execution.
+
+While one Job is executing, another may wait for the same [Agent](#agent) or for an eligible [Agent](#agent) which may not even be registered with the server. In this scenario, the Pipeline it belongs to is set to status ``AWAITING`` and will resume execution as soon as an eligible [Agent](#agent) becomes registered and enabled with HawkCD.
+
+Job without resources can be executed from all agents. Job with a specific
+[resource](#resource) may be executed only from an [agent](#agent) with the same resource assigned. Also a``Job`` may have more than one resource assigned.
+
+Jobs may contain [Environment Variables](#environment-variables). They become available during task execution and can be read from task by using percentage symbol notation e.g. ``%EnvironmentVariable%``
+
+To learn more about  how environment variables work, check the [Environment Variables](#environment-variables) section.
+
+### Configuration Options
+``Job`` may be created first and decided to be configured later. Its configuration options include updating job name, adding, editing or deleting a task list.
+Overriding environment variable, adding resource
+
+* [add/delete job](/configuration/#add-delete-job)
+* [configure job](/configuration/#configure-job)
+
 Task
 --------------
 ### Overview
@@ -107,8 +198,8 @@ The `Upload Artifact` Task takes a file or a folder (usually created by an Agent
 
 The `Upload Artifact` Task provides two configuration options:
 
-* `Source` - Path to the Artifact starting at `../Agent/Pipelines/<PipelineName>/`. If no `Source` is selected the entire contents of the folder is uploaded.   
-* `Destination` - A folder or folders to be created where the Artifact is stored. If not `Destination` is selected the Artifact is saved in `../Server/Arttifacts/<PipelineName>/<PipelineRun>/` with no additional folders.
+* `Source` - Path to the Artifact starting at `../Agent/Pipelines/<PipelineName>/`. If no `Source` is selected the entire contents of the folder are uploaded.   
+* `Destination` - A folder or folders to be created where the Artifact is stored. If no `Destination` is selected the Artifact is saved in `../Server/Arttifacts/<PipelineName>/<PipelineRun>/` with no additional folders.
 
   <div class="admonition note">
   <p class="admonition-title">Note</p>
@@ -129,123 +220,12 @@ The `Fetch Artifact` Task takes a file or a folder previously stored on the Serv
 
 ### Configuration options
 
-The `Upload Artifact` Task provides four configuration options:
+The `Fetch Artifact` Task provides four configuration options:
 
-* ``Pipeline`` - Which pipeline.
-* ``Run`` - Which pipeline run.
-* ``Source``  - Path to ``Artifact``.  
-* ``Destination`` - Path to server destination where artifacts to be stored (optional).
-
-Job
------
-
-### Overview
-
-A ``job`` consists of multiple ``tasks``, each of which executes in order. If ``task`` inside a ``job`` fails, then the ``job`` is considered failed, and unless specified otherwise, the rest of the tasks in the will not be run.
-
-### How does it work?
-
-Unlike ``Tasks`` and ``Stages``, which are always executed in sequence, ``Jobs`` are executed in ``parallel`` among Agent's grid.
-``Resources``, also called ``tags``, can be used to route jobs to specific agents. When job doesn't have a concrete resource assigned, it considers all available agents registered with the server for execution.
-
-While one Job is executing, another may wait for the same [Agent](#agent) or for an eligible [Agent](#agent) which may not even be registered with the server. In this scenario, the Pipeline it belongs to is set to status ``AWAITING`` and will resume execution as soon as an eligible [Agent](#agent) becomes registered and enabled with HawkCD.
-
-Job without resources can be executed from all agents. Job with a specific
-[resource](#resource) may be executed only from an [agent](#agent) with the same resource assigned. Also a``Job`` may have more than one resource assigned.
-
-Jobs may contain [Environment Variables](#environment-variables). They become available during task execution and can be read from task by using percentage symbol notation e.g. ``%EnvironmentVariable%``
-
-To learn more about  how environment variables work, check the [Environment Variables](#environment-variables) section.
-
-### Configuration Options
-``Job`` may be created first and decided to be configured later. Its configuration options include updating job name, adding, editing or deleting a task list.
-Overriding environment variable, adding resource
-
-* [add/delete job](/configuration/#add-delete-job)
-* [configure job](/configuration/#configure-job)
-
-Stage
--------
-### Overview
-A ``Stage`` can be thought as a container for ``Jobs``. While ``Jobs`` are run in parallel, ``Stages`` are always run in sequence. If a ``Job`` from particular stage fails, then the Stage is considered failed as well.
-However, since Jobs are independent of each other, all other Jobs in the Stage will also be run. Stages that belong to a certain pipeline are always run in sequence.
-
-### How does it work?
-Stages are major component when comes to automation release processing. Each step of building new feature into a large project
-may be divided into few steps/stages:
-
-* Check-in    
-* Assemble    
-* Acceptance
-* Performance
-* Production Deployment
-
-Since stages run in a sequence, each of the previous stages (e.g. steps) must complete successfully
-in order next stage to start. If a ``Stage`` fails next ``Stage`` does not start, ``Pipeline`` is set to FAILED.
-
-### Configure Options
-
-Each `Stage` has a ``Stage Trigger`` reason: ``Manual`` and ``On Success``.
-
-When ``Manual`` stage  trigger is selected, stage pauses and awaits to be run manually. Pipeline status is set to AWAITING.
-
-``On Success`` start stage when previous stage has ``PASSED`` successfully. If previous stage fails, next stage does not start executing.
-Pipeline status is set to FAILED.
-
-Stages also have ``Environment Variables``, which can be overridden by jobs environment variables. To see how environment variables work, please
-check [``environment variables section``](/concepts/#environment-variables).
-
-
-### Stage Scenarios
-
-* [Add ](/configuration/#add-stage)
-* [Delete ](/configuration/#delete-stage)
-* [Configure](/configuration/#configure-stage)
-
-Pipeline
----------
-
-### Overview
-A ``Pipeline`` consists of multiple Stages, each of which is run in order. If a Stage fails, then the Pipeline is considered failed and the rest of the stages will not be run. The ``Pipeline`` server object allows crafting the entire application release process
-
-###How does it work?
-
-We briefly view  [Anatomy of a Pipeline](/concepts/#anatomy-of-a-cd-pipeline) .<br />
-All Pipelines have a set of Stages which have a set of Jobs which have a set of Tasks.
-
-There are four different types of tasks in ``HawkCD`` - [Exec](/concepts/#exec), [Fetch Artifact](/), [Fetch Material](/) and [Upload Artifact](/). In order Pipeline run to be set to
-status _passed_, task action must complete successfully, unless the task is marked otherwise with [Ignore Errors](/) option.
-
-If all tasks in a certain ``Job`` complete successfully, the ``Job`` is set to _passed_, all jobs must be with status _passed_ for a ``Stage`` to pass. All Stages must pass for ``Pipeline``
-run to complete successfully. If a ``Task`` fails the ``Job`` is set to _failed_ respectively ``Pipeline`` status is set to _failed_.
-
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>
-All Stages and Tasks runs in sequence, except Jobs. Execution starts in order, if one Task, Job, or Stage fails the next Task/Job/Stage will not run.
-The Pipeline will be set to FAILED.
-</p>
-</div>
-
-### Configuration Options
-In HawkCD Pipelines can be managed very easily.   
-
-
-You can [update pipeline name](/) or select [Automatic pipeline scheduling]. You can [add Stage](/), [add Job](/) or
-[add Task](/) to already created Pipeline. Delete each one of them is also pretty straightforward, with just one click. Each ``Pipeline``, ``Stage``, ``Job`` or ``Task`` can be configured in details.   
-
-
-Click [Configure Pipeline](/configuration/#pipeline-configuration) to see how to configure [Environment Variables](/) or how to add [Resources](/).
-
-
-### Pipeline Scenarios
-
-* [Add new Pipeline](/)
-* [Configure Pipeline](/)
-* [Delete Pipeline](/)
-
-
-
+* `Pipeline` - the name of the Pipeline which previously uploaded the Artifact. The user can select any Pipeline that he/she has at least permission type `Viewer`.
+* `Run` - the specific Pipeline run which previously uploaded the Artifact. The `latest` option is useful when the user wants to fetch an Artifact the will be uploaded with the current execution of the Pipeline.
+* ``Source``  - Path to the Artifact starting at `../Server/Artifacts/<PipelineName>/<PipelineRun>/`. If no `Source` is selected the entire contents of the folder are fetched.   
+* ``Destination`` - A folder or folders to be created where the Artifact is fetched. If no `Destination` is selected the Artifact is saved in `../Agent/Pipelines/<PipelineName>/` with no additional folders.
 
 Pipeline Group
 ---------------
