@@ -22,15 +22,21 @@ Task
 --------------
 ### Overview
 
-A Task is an action that is performed on a server/machine or inside a container where a `HawkCD` Agent is installed. Tasks are contained inside Jobs and are always executed in the order added to the Job. `HawkCD` offers four types of Tasks - `Exec`, `Fetch Material`, `Upload Artifact` and `Fetch Artifact`.
+A Task is an action that is performed on a server/machine or inside a container where a `HawkCD` Agent is installed. Tasks are contained inside Jobs and are always executed in the order they have in the Job. `HawkCD` offers four types of Tasks - `Exec`, `Fetch Material`, `Upload Artifact` and `Fetch Artifact`.
 
 ### Configuration Options
 
 All Tasks have a `Run If Condition` option. `Passed` (set by default), `Failed` or `Any` are the selectable choices.
 
 * `Passed` - if selected, the Task will be executed only in case the one before it completed successfully. If the Task is to be executed first the option is ignored.
-* `Failed` - if selected, the Task will be executed only ...
+* `Failed` - if selected, the Task will be executed only if the one before it failed to complete successfully.
 * `Any` - if selected, the Task will be executed regardless of the status of the previous one.
+
+### Task Scenarios
+
+* [Add](/configuration/#add-task)
+* [Configure](/configuration/#configure-task)
+* [Delete](/configuration/#delete-task)
 
 Exec
 --------------
@@ -44,7 +50,7 @@ The `Exec Task` is the most universal type of Task `HawkCD` offers. It allows yo
 The `Exec Task` contains the following attributes: `Command`, `Arguments` and `Working Dir`.
 
 * `Command` - executable name to run, usually for Linux -`/bin/bash`, for Windows `cmd`
-* `Arguments` - arguments to be passed to the executable (e.g., Linux - `-c cp -r dir dir1` , Windows `/c echo %PAHT%`)
+* `Arguments` - arguments to be passed to the executable (e.g., Linux - `-c cp -r dir dir1` , Windows `/c echo %PATH%`)
 * `Working Dir` - the directory in which the process will run
 
 Example commands:
@@ -67,52 +73,28 @@ The above command runs on Linux based systems the `bash` executable and passes t
 
 ### Configuration Options
 
-The `Exec Task` provides a single configuration option:
+The `Exec` Task provides one configuration option:
 
-* ``Ignore Errors ``
-
- ``Ignore Errors`` - Ignore errors, if there are any, sets task status to ``Passed``.
-
- <div class="admonition warning">
- <p class="admonition-title">WARNING</p>
- <p>
- Be aware that``FAILED`` task will run only in case the previous task exits with status failed code, different than ``0``
- </p>
- </div>
-
-### Exec Tasks Scenarios
-
-* [Add ](/configuration/#add-task)
-* [Delete ](/configuration/#delete-task)
-* [Configure](/configuration/#configure-task)
-
+ * ``Ignore Errors`` - The Task's status is set to `PASSED` regardless if it completed successfully or not.
 
 Fetch Material
 ---------------
-
 ###Overview
 
-The ``Fetch Material`` task allows to fetch already defined materials with the system. At the moment ``HawkCD`` supports only materials of type ``git`` meaning that you can define and fetch materials of type git only as input to your pipelines. Future versions it may support other types e.g. ``TFVC``, ``SVN`` etc. A common use case is when you need to build your source code but before doing it you need to fetch it on an agent first.
+The `Fetch Material` Task allows to fetch [Materials](/concepts/#materials) already defined with the system. At the moment `HawkCD` supports only Materials of type `Git`, meaning that you can define and fetch only Materials of type `Git` as input to your Pipelines. Future versions may support other types (e.g., `TFVC`, `SVN`, etc.). A common use case is when you need to build your source code but before doing that you need to fetch it on an Agent first.
 
 ### How does it work?
 
-The ``Fetch Material`` task clones git repository directly from projects source into ``HawkCD`` Server and Agent. <br />
-``Fetch Materials`` task contains one attribute - [``material``](/#materials). <br /> </br >
-At the moment ``HawkCD`` supports only one material per pipeline. Multiple materials (e.g. sources) may be added into feature versions.
+The `Fetch Material` Task clones a Git repository directly from the project's source to a `HawkCD` Server and Agent.
 
 ### Configuration Options
-``Fetch Material`` task provides one configuration option - [Run If Condition](/concepts/#run-if-condition)
 
-### Fetch Material Tasks Scenarios
+``Fetch Material`` Task provides one configuration option:
 
-* [Add ](/configuration/#)
-* [Delete ](/configuration/#)
-* [Configure](/configuration/#)
-
+* `Material` - At the moment `HawkCD` supports only one Material per Pipeline. Multiple Materials will be added into future versions.
 
 Upload Artifact
 ----------------
-
 ### Overview
 The ``Upload Artifacts`` task allows uploading build artifacts to HawkCD server. A common use case is when source code is compiled and the build output is stored to the server via the ``Upload Artifacts`` task, then using ``Fetch Artifacts`` to deploy artifacts to appropriate agent.
 
