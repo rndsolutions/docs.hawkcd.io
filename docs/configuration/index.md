@@ -18,7 +18,7 @@ Accessing a fresh installation of HawkCD comes with pre-defined administrator ac
 
 
 
-Set-up a Pipeline
+Add Pipeline
 -----------------
 
 * Chose a Pipeline Group
@@ -35,7 +35,7 @@ Set-up a Pipeline
 </div>
 
 
-Pipeline Configuration
+Manage Pipelines
 -----------------------
 
 Once a ``pipeline`` is created additional configuration is required to get it building and deploying your code. The default pipeline wizard creates a ``pipeline definition`` with default ``stage``, ``job`` and one ``task``.
@@ -53,13 +53,6 @@ Stages:
 * Production Deployment
 
 ![Screenshot](../img/hawkcd-config.png)
-
-
-#### Configuration Options
-
-* ``Automatic pipeline scheduling`` - when set to true, the pipeline is triggered when material changes e.g. a new commit is pushed to the remote repository
-
-Pipeline Configurations allows adding more Stages/Jobs/Tasks.
 
 ### Add Stage
 A Stage consists of multiple jobs, each of which can run independently of the others.   
