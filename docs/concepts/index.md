@@ -96,70 +96,45 @@ The `Fetch Material` Task clones a Git repository directly from the project's so
 Upload Artifact
 ----------------
 ### Overview
-The ``Upload Artifacts`` task allows uploading build artifacts to HawkCD server. A common use case is when source code is compiled and the build output is stored to the server via the ``Upload Artifacts`` task, then using ``Fetch Artifacts`` to deploy artifacts to appropriate agent.
+
+The `Upload Artifact` Task allows users to upload build artifacts to `HawkCD` a Server. A common use case is when source code is compiled and the build output is stored on the Server via the `Upload Artifact` Task, then using `Fetch Artifact` to deploy artifacts to the appropriate Agent.
 
 ### How does it works?
 
-
-The ``Upload Artifact`` task provides two attributes: ``Source`` and ``Destination``.   
-
-``Source``  - Path to ``Artifact``.  
-``Destination`` - Path to server destination where artifacts to be stored (optional).
-
-Upload Artifact task uses relative paths to the agent sandbox.
-Artifact must be  must be on the agents directory in order
-to be uploaded to the ``Server``.   
-
-Full path to ``Source`` - ``Agent/Pipelines/<PipelineName>/``.   
-Full path to ``Destination`` - ``Server/Arttifacts/<PipelineName>/<PipelineRun>/``.
-
-
+The `Upload Artifact` Task takes a file or a folder (usually created by an Agent), archives it creating a .zip file and sends it to the Server. Once on the Server the archive is unzipped and stored in the Artifacts folder.
 
 ### Configuration Options
 
-The ``Upload Artifact`` task provides one configuration option - [``Run If Condition``]()
+The `Upload Artifact` Task provides two configuration options:
 
- ``Run If Condition`` - runs under three different scenarios: ``Passed``, ``Failed`` and ``Any``.
- If option ``Passed`` (default) is chosen, the execution of the current task will be continued only in case the previous task completed successfully - ``Passed``
- If the option ``Failed`` is chosen it will be run only in case the previous task is marked as ``Failed``.
- A task set to ``Any`` will always run, regardless of previous task status (``Passed`` | ``Failed``).
+* `Source` - Path to the Artifact starting at `../Agent/Pipelines/<PipelineName>/`. If no `Source` is selected the entire contents of the folder is uploaded.   
+* `Destination` - A folder or folders to be created where the Artifact is stored. If not `Destination` is selected the Artifact is saved in `../Server/Arttifacts/<PipelineName>/<PipelineRun>/` with no additional folders.
 
-### Upload Artifact Tasks Scenarios
+  <div class="admonition note">
+  <p class="admonition-title">Note</p>
+  <p>
+  The `Upload Artifact` Task uses relative paths to the Agent sandbox. Artifacts must be in `../Agent/Pipelines/<PipelineName>/` folder to be uploaded to the `Server`.   
+  </p>
+  </div>
 
- * [Add ](/configuration/#)
- * [Delete ](/configuration/#)
- * [Configure](/configuration/#)
-
-
-
-
-Fetch Artifacts
+Fetch Artifact
 ---------------
 ### Overview
-The ``Fetch Artifact`` task allows users to download artifacts from the server repository into a ``HawkCD`` agent sandbox.
+
+The `Fetch Artifact` Task allows users to download Artifacts from the Server repository to a `HawkCD` Agent sandbox.
 
 ### How does it work?
-``Fetch Artifact`` downloads artifact from ``Server`` to agent sandbox.  
-The fetch artifacts contains the following attributes: ``Pipeline``, ``Run``, ``Source`` and ``Destination``.
+
+The `Fetch Artifact` Task takes a file or a folder previously stored on the Server, archives it creating a .zip file and sends it to the Agent. Once on the Agent the archive is unzipped and stored in the currently executing Pipeline's folder.
+
+### Configuration options
+
+The `Upload Artifact` Task provides four configuration options:
 
 * ``Pipeline`` - Which pipeline.
 * ``Run`` - Which pipeline run.
 * ``Source``  - Path to ``Artifact``.  
 * ``Destination`` - Path to server destination where artifacts to be stored (optional).
-
-### Configuration options
-The ``Fetch Artifact`` task provides one configuration option - ``Run If Condition``
-
- ``Run If Condition`` - runs under three different scenarios: ``Passed``, ``Failed`` and ``Any``.
- If option ``Passed`` (default) is chosen, the execution of the current task will be continued only in case the previous task completed successfully - ``Passed``
- If the option ``Failed`` is chosen it will be run only in case the previous task is marked as ``Failed``.
- A task set to ``Any`` will always run, regardless of previous task status (``Passed`` | ``Failed``).
-
-### Fetch Artifact Tasks Scenarios
-
-* [Add ](/configuration/#)
-* [Delete ](/configuration/#)
-* [Configure](/configuration/#)
 
 Job
 -----
