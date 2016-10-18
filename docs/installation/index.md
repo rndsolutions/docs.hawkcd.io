@@ -11,8 +11,7 @@ Installation
 
 Linux
 ------
-For Linux like operating systems ``HawkCD`` is distributed as a self containing package, it ships with embedded Redis database.
-
+For Linux-like operating systems `HawkCD` is distributed as a self containing package. It ships with embedded Redis database.
 
 ###Install & Run the Server
 

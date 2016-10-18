@@ -3,29 +3,27 @@ HawkCD Configuration
 
 Accessing the server (Login)
 --------
-Accessing a fresh installation of HawkCD comes with pre-defined administrator account
+Accessing a fresh installation of `HawkCD` comes with a pre-defined administrator account.
 
-* ``user`` : admin@admin.com, ``password``:admin
-* ``server url``: http://localhost:8080
+* `user`: admin@admin.com,
+* `password`: admin
+* `server url`: http://localhost:8080
 
 
 <div class="admonition warning">
 <p class="admonition-title">WARNING</p>
 <p>
-  It is highly recommended to change the default password of the administrator account after the first login
+  It is highly recommended to change the default password of the administrator account after the first login.
 </p>
 </div>
 
-
-
 Add Pipeline
 -----------------
-
 * Chose a Pipeline Group
-* In the right top corner click "Add" button
-* Fill in ``Pipeline Name`` and press ``Continue``
-* Choose either existing or create a new material
-* Review your pipeline definition settings and press the ``Submit`` button
+* Click the `Add` button
+* Fill in `Pipeline Name` and press `Continue`
+* Choose either existing or create a new Material
+* Review your Pipeline settings and press the `Submit` button
 
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -35,177 +33,60 @@ Add Pipeline
 </div>
 
 
-Manage Pipelines
+Configure Pipeline
 -----------------------
+Once a Pipeline is created additional configuration is required to get it building and deploying your code. The default Pipeline wizard creates a Pipeline with default Stage, Job and Task.
 
-Once a ``pipeline`` is created additional configuration is required to get it building and deploying your code. The default pipeline wizard creates a ``pipeline definition`` with default ``stage``, ``job`` and one ``task``.
+* Go to Pipeline Screen
+* Choose a Pipeline
+* Press `Configure` button (represented by the cogwheel icon).
+* Select `Pipeline Settings` to edit `Pipeline Name` and `Automatic Pipeline scheduling` options
+* Select `Stages` tab to add, edit and delete Stages
+* Select `Environment Variables` tab to add, edit and delete Environment Variables
 
-Here's an example pipeline that can be developed with HawkCD:
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+ If a Pipeline has only one Stage it cannot be deleted.
+</div>
 
-Pipeline Name:HawkCD
+Here's an example Pipeline that can be set-up with `HawkCD`:
 
-Stages:
-
-* Check-in    
-* Assemble    
-* Acceptance
-* Performance
-* Production Deployment
+Pipeline Name: HawkCD
+Stages: Check-in, Assemble, Acceptance, Performance, Production Deployment
 
 ![Screenshot](../img/hawkcd-config.png)
 
-### Add Stage
-A Stage consists of multiple jobs, each of which can run independently of the others.   
-To learn more about stages check [``Stage``](/concepts/#stage) concept section.
-
- * Go to Pipeline Screen
- * Select ``Pipeline``
- * Press ``configure`` button.
- * Press ``Add Stage`` button.
- * Fill out all fields.
- * Press ``Add Stage``.
-
 ### Configure Stage
-Stage provides few configuration options such as add, update, delete and environment variables.
-#### Configure Stage Settings
-
- * Go to Pipeline Screen
- * Select ``Pipeline``.
- * Press ``configure`` button.
- * Select ``Stage``.
- * Update ``Stage Name`` or ``Stage Trigger``.
- * Press ``Update``.
-
-
-#### Configure Environment Variable
-Environment Variables are user-defined variables that are defined in the configuration.  
-To learn more about _EV_ check [``Environment Variables``](/concepts/#environment-variables) concept section.  
 
 * Go to Pipeline Screen
-* Select ``Pipeline``.
-* Press ``configure`` button.
-* Select ``Stage`` and go to ``Environment Variable`` tab.
-* Press ``Add Environment Variable``
-* Fill out form and press ``Add Value``.  
-Environment Variable can be also edited and deleted from ``Controls`` in the ``Environment Variable`` tab.
+* Choose a Pipeline
+* Press `Configure` button (represented by the cogwheel icon).
+* Choose a Stage
+* Select `Stage Settings` to edit `Stage Name` and `Stage Trigger` options
+* Select `Jobs` tab to add, edit and delete Jobs
+* Select `Environment Variables` tab to add, edit and delete Environment Variables
 
-
-### Delete Stage
-
-* Go to Pipeline Screen
-* Select ``Pipeline``.
-* Press ``configure`` button.
-* Choose ``Stage`` and press ``Delete`` in Controls section.
-
-  <div class="admonition note">
-  <p class="admonition-title">Note</p>
-Last ``Stage`` object in a ``Pipeline`` can not be deleted. The same applies for last ``Job`` or last ``Task``.
-  </div>
-
-
-### Add Job
-A job consists of multiple tasks, each of which will be run in order. If a task in a job fails,
-then the job is considered failed, and unless specified otherwise, the rest of the tasks in the job will not be run.  
-
-To learn more about jobs check the [``Job``](/concepts/#job) concept section.  
-
-
-* Go to Pipeline Screen
-* Select ``Pipeline``.
-* Press ``configure`` button.
-* Select ``Stage``
-* Press ``Add Job``
-* Fill in ``Job Name`` and select ``Task``.
-* Fill out task form and press ``Add Job``.
-
-### Delete Job
-
-* Go to Pipeline Screen
-* Select ``Pipeline``.
-* Press ``configure`` button.
-* Select ``Stage``
-* Press ``Delete`` in Controls section.
-
- <div class="admonition note">
- <p class="admonition-title">Note</p>
-Last ``Job`` object in a ``Stage`` can not be deleted. The same applies for last ``Task`` or last ``Stage``.
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+ If a Stage has only one Job it cannot be deleted.
 </div>
 
 ### Configure Job
-Jobs provides multiple configuration options such as adding, deleting and updating task within job and the job itself.
-``Resources`` and ``Environment Variable`` can be also added to job. To learn more about see concept sections.
-#### Update Job Name
-* Go to Pipeline Screen
-* Select ``Pipeline``.
-* Press ``configure`` button.
-* Select ``Job`` from ``Stage``.
-* Go to ``Job Setting`` tab.
-* Fill in ``Job Name`` and press ``Update``.
-
-#### Add Environment Variable
-Environment Variables" are user-defined variables that are defined in the configuration.
-Environment variables can be defined at multiple levels: Within ``Job``, ``Pipeline``, ``Stage`` and ``Task``.  
-To learn more about Environment Variables see [``Environment Variables concept section``](/concepts/#environment-variables)
 
 * Go to Pipeline Screen
-* Select ``Pipeline``.
-* Press ``configure`` button.
-* Select ``Job`` from ``Stage``.
-* Go to ``Environment Variables`` tab and press ``Add Environment Variable``.
-* Fill in ``Name`` and ``Value`` fields and press ``Add Value``.
-Environemt Variables can be also edited and deleted from ``Controls`` in the ``Environment Variables`` tab.
+* Choose a Pipeline
+* Press `Configure` button (represented by the cogwheel icon).
+* Choose a Stage
+* Choose a Job
+* Select `Job Settings` to edit `Job Name`
+* Select `Tasks` tab to add, edit and delete Tasks
+* Select `Environment Variables` tab to add, edit and delete Environment Variables
+* Select `Resources` tab to add, edit and delete Resources
 
-
-#### Add Resource
-
-Agents and jobs can be enhanced with "Resources". Resources are free-form tags, that help decide which agents are capable of picking up specific jobs.  
-
-To learn more about Resources see [``Resource | Tag``](/concepts/#resource-tags) section in Concepts.
-
-* Go to Pipeline Screen
-* Select ``Pipeline``.
-* Press ``configure`` button.
-* Select ``Job`` from ``Stage``.
-* Go to ``Resources`` tab and press ``Add Resource``.
-* Add resource and press ``Add Resource``.      
-Resources can be also edited and deleted from ``Controls`` in the ``Resources`` tab.
-
-### Add Task
-
-A task is an action that is performed on a server/machine or inside container where HawkCD agent is installed.
-HawkCD offers 4 types of tasks: ``Exec``,  ``Fetch Material``, ``Upload Artifact`` and ``Fetch Artifact``.
-
-To learn more about tasks, see [``Task``](/concepts/#server-objects-concepts)  section in Concepts.
-
-* Go to Pipeline Screen
-* Select ``Pipeline``.
-* Press ``configure`` button.
-* Select ``Job`` from ``Stages`` and press ``Add Task``.
-* Select ``Task Type``, fill in all fields and press ``Add Task``.  
-Tasks can be also edited and deleted from ``Controls`` in the ``Tasks`` tab.
-
-### Delete Task
-* Go to Pipeline Screen
-* Select ``Pipeline``.
-* Press ``configure`` button.
-* Select ``Job`` from ``Stages``.
-* Press ``Delete`` in ``Controls`` section.
-
- <div class="admonition note">
- <p class="admonition-title">Note</p>
-Last ``Task`` object in a ``Job`` can not be deleted. The same applies for last ``Job`` or last ``Stage``.
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+ If a Job has only one Task it cannot be deleted.
 </div>
-
-### Configure Task
-
-All tasks have same configuration options except ``Exec`` task, which has additional ``Ignore Errors`` option.
-Every task in HawkCD have ``Run If Condition`` option.  
-To learn how it works, please see [``Concepts``](/concepts)
-
-* Go to selected ``Job``.
-* Press ``Edit`` on selected ``Job``.
-* Make changes and press ``Edit Task``.
-
 
 Running a Pipeline
 --------------------
@@ -214,35 +95,31 @@ Running a Pipeline
 Manage Pipeline Groups
 ----------------------
 
-Pipeline Groups allows grouping pipelines together.
+Pipeline Groups allow grouping Pipelines together.
 
 ### Add new Pipeline Group
 
+* Go to Admin Screen
+* Select `Pipeline Groups` tab and press the `Add` button
+* Fill in the group name and press `OK` button
+
+### Assign pipeline to a group
 * Go to the Admin Screen
-* Select ``Pipeline Groups`` and press the ``Add`` button
-* Fill in the group name and press ``OK`` button
+* Select `Pipeline Groups` tab and choose group
+* Press the `Assign pipeline` button
+* All Pipelines `assigned` to other groups and all `unassigned` Pipelines will be displayed
+* Select a Pipeline and press the `OK` button
 
 ### Delete Pipeline Group
 
 * Go to the Admin Screen
-* Select ``Pipeline Groups`` choose a group
+* Select `Pipeline Groups` tab and choose a group
 * Press the bin button in the right corner of the group
 
-
 <div class="admonition warning">
-<p class="admonition-title">WARNING</p>
-<p>
-A Pipeline group can be deleted in case it doesn't have any any pipelines assigned to it, otherwise the delete button will be unavailable
-</p>
+  <p class="admonition-title">WARNING</p>
+    <p>A Pipeline Group can be deleted only if it doesn't have any pipelines assigned to it.</p>
 </div>
-
-
-### Assign pipeline to a group
-* Go to the Admin Screen
-* Select ``Pipeline Groups`` and choose a concrete group
-* Press the ``assign pipeline`` button
-* A pop-up window will show all ``assigned`` and ``unassigned`` pipelines to choose from
-* Select a pipeline and press the ``OK`` button
 
 Manage Materials
 ----------------
