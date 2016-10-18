@@ -81,17 +81,16 @@ Job
 -----
 ### Overview
 
-A Job consists of multiple Tasks. The Tasks always execute in order. If ``task`` inside a ``job`` fails, then the ``job`` is considered failed, and unless specified otherwise, the rest of the tasks in the will not be run.
+A Job consists of multiple Tasks. Jobs are assigned to Agents and then executed by them.
 
 ### How does it work?
 
-Unlike ``Tasks`` and ``Stages``, which are always executed in sequence, ``Jobs`` are executed in ``parallel`` among Agent's grid.
-``Resources``, also called ``tags``, can be used to route jobs to specific agents. When job doesn't have a concrete resource assigned, it considers all available agents registered with the server for execution.
+Unlike Stages, which are always executed in sequence, Jobs are executed in ``parallel`` among a grid of Agents.</br>
+`Resources`, also called `Tags`, can be used to route Jobs to specific Agents. A Job with a specific `Resource` can be executed only by an Agent with the same `Resource` assigned. Also a``Job`` may have more than one resource assigned.
+
+When a Job doesn't have a concrete Resource assigned, it considers all available Agents registered with the Server for execution.
 
 While one Job is executing, another may wait for the same [Agent](#agent) or for an eligible [Agent](#agent) which may not even be registered with the server. In this scenario, the Pipeline it belongs to is set to status ``AWAITING`` and will resume execution as soon as an eligible [Agent](#agent) becomes registered and enabled with HawkCD.
-
-Job without resources can be executed from all agents. Job with a specific
-[resource](#resource) may be executed only from an [agent](#agent) with the same resource assigned. Also a``Job`` may have more than one resource assigned.
 
 Jobs may contain [Environment Variables](#environment-variables). They become available during task execution and can be read from task by using percentage symbol notation e.g. ``%EnvironmentVariable%``
 
