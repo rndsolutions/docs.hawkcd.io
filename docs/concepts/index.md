@@ -30,13 +30,13 @@ After a Pipeline is configured it is ready to be executed. Upon each execution a
 A Pipeline can be paused or canceled during its execution setting its Status to `PAUSED` or `CANCELED` respectively. </br>
 There is also the `AWAITING` Status, which means that an action by the user must be taken to continue the execution of the Pipeline. Usually this is caused by a Stage, which is set to be Manually Triggered or there being no Assignable Agents.
 
-As mentioned before, a Pipeline consists of multiple Stages, all of which are executed in sequence. If all Stages complete successfully, the Pipeline's Status is set to `PASSED`. If one fails, all Stages after it will not be run and the Pipeline's Status is set to `FAILED`.
-
 ### Configuration Options
 
 The Pipeline provides the following configuration options:
 
 * `Automatic pipeline scheduling` - If selected, the Pipeline will trigger automatically, creating a new run, when its Material is updated.
+
+Pipelines also have `Environment Variables`, which can be overridden by Stage `Environment Variables`. To see how they work, please see [Environment Variables section](/concepts/#environment-variables).
 
 ### Pipeline Scenarios
 
@@ -47,34 +47,29 @@ The Pipeline provides the following configuration options:
 Stage
 -------
 ### Overview
-A ``Stage`` can be thought as a container for ``Jobs``. While ``Jobs`` are run in parallel, ``Stages`` are always run in sequence. If a ``Job`` from particular stage fails, then the Stage is considered failed as well.
-However, since Jobs are independent of each other, all other Jobs in the Stage will also be run. Stages that belong to a certain pipeline are always run in sequence.
+
+A Stage can be thought of as a container for Jobs. Stages are a major component when it comes to automation release processing. Each step of building a new feature into a large project can be separated into Stages.
 
 ### How does it work?
-Stages are major component when comes to automation release processing. Each step of building new feature into a large project
-may be divided into few steps/stages:
 
-* Check-in    
+As mentioned before a Pipeline consists of multiple Stages, all of each are executed in sequence, which means the previous Stage must complete successfully in order for the next to start. If all Stages pass, the Pipeline's Status is set to `PASSED`. If one fails, all Stages after it will not be run and the Pipeline's Status is set to `FAILED`. </br>
+Stages have the same Statuses as Pipelines: `PASSED`, `FAILED`, `IN_PROGRESS`, `PAUSED`, `CANCELED`, `AWAITING`.
+
+<!-- * Check-in    
 * Assemble    
 * Acceptance
 * Performance
-* Production Deployment
-
-Since stages run in a sequence, each of the previous stages (e.g. steps) must complete successfully
-in order next stage to start. If a ``Stage`` fails next ``Stage`` does not start, ``Pipeline`` is set to FAILED.
+* Production Deployment -->
 
 ### Configure Options
 
-Each `Stage` has a ``Stage Trigger`` reason: ``Manual`` and ``On Success``.
+The Stage provides the following configuration options:
 
-When ``Manual`` stage  trigger is selected, stage pauses and awaits to be run manually. Pipeline status is set to AWAITING.
+* `Stage Trigger`
+    * `On Success` - set by default. If selected the Stage will trigger automatically if the one before it completed successfully (has Status`PASSED`).
+    * `Manual` - if selected, the execution of the Pipeline will stop at this Stage. Both Pipeline and Stage will be with Status `AWAITING` until the user decides to continue the process and manually triggers the Stage.
 
-``On Success`` start stage when previous stage has ``PASSED`` successfully. If previous stage fails, next stage does not start executing.
-Pipeline status is set to FAILED.
-
-Stages also have ``Environment Variables``, which can be overridden by jobs environment variables. To see how environment variables work, please
-check [``environment variables section``](/concepts/#environment-variables).
-
+Stages also have `Environment Variables`, which can be overridden by Jobs `Environment Variables`. To see how they work, please see [Environment Variables section](/concepts/#environment-variables).
 
 ### Stage Scenarios
 
