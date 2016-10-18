@@ -1,12 +1,12 @@
 
 Continuous Delivery Overview
 ==============================
-The `Continuous Delivery` (CD) approach to shipping software has been around for few years now, implemented in teams allows them to produce software in rapid cycles, ensuring that the software can be reliably released at any time. It aims at building, testing, and releasing software faster and more frequently. The approach helps reduce the cost, time, and risk of delivering changes by allowing for more incremental updates to applications in production. `HawkCD` helps teams to adopt CD practices in the Software Development Life Cycle (SDLC) by giving them the freedom to create CD Pipelines to model their release processes.
+The `Continuous Delivery` (CD) approach to shipping software has been around for a few years now, when implemented in teams it allows them to produce software in rapid cycles, ensuring that the software can be reliably released at any time. It aims at building, testing, and releasing software faster and more frequently. The approach helps reduce the cost, time, and risk of delivering changes by allowing for more incremental updates to applications in production. `HawkCD` helps teams adopt CD practices in the Software Development Life Cycle (SDLC) by giving them the freedom to create CD Pipelines to model their release processes.
 
 Anatomy of a CD Pipeline
 --------------------------
 
-*The Deployment Pipeline* is a central concept in the CD approach to shipping software. At an abstract level, a deployment Pipeline is an automated implementation of the software release process for getting software from version control to the market. Usually every change in the software goes through a complex process on its way to being released. The process may involve building the source code, followed by a progression of these builds through numerous Stages where the product quality gets assessed. The Deployment Pipeline becomes a central collaboration hub for the software delivery team. Ability to automate the process is crucial for the team productivity.
+*The Deployment Pipeline* is a central concept in the CD approach to shipping software. At an abstract level, a deployment Pipeline is an automated implementation of the software release process for getting software from version control to the market. Usually every change in the software goes through a complex process before being released. The process may involve building the source code, followed by a progression of these builds through numerous Stages where the product quality gets assessed. The Deployment Pipeline becomes a central collaboration hub for the software delivery team. Ability to automate the process is crucial for overall team productivity.
 
 The CD Pipeline breaks down a software delivery process into Stages. The aim of each Stage is to verify the software quality from a different angle, validate the functionality and prevent errors from affecting users. The CD Pipeline provides feedback to the team and visibility into the flow of changes to everyone involved in the delivery.
 
@@ -28,9 +28,9 @@ As discussed previously the Pipeline allows crafting the entire application rele
 
 After a Pipeline is configured it is ready to be executed. Upon each execution a new Pipeline run is created with its own Status and RunId (starting from 1). When started, a Pipeline always begins with Status `IN_PROGRESS`. Upon successful completion its Status is set to `PASSED` and if something goes wrong and it doesn't manage to complete its Status is set to `FAILED`. </br>
 A Pipeline can be paused or canceled during its execution setting its Status to `PAUSED` or `CANCELED` respectively. </br>
-There is also a Status `AWAITING`, which means that an action by the user must be taken to continue the execution of the Pipeline.
+There is also the `AWAITING` Status, which means that an action by the user must be taken to continue the execution of the Pipeline. Usually this is caused by a Stage, which is set to be Manually Triggered or there being no Assignable Agents.
 
-As mentioned before a Pipeline consists of multiple Stages, all of each are executed in sequence. If all Stages complete successfully, the Pipeline's Status is set to `PASSED`. If one fails, all Stages after it will not be run and the Pipeline's Status is set to `FAILED`.
+As mentioned before, a Pipeline consists of multiple Stages, all of which are executed in sequence. If all Stages complete successfully, the Pipeline's Status is set to `PASSED`. If one fails, all Stages after it will not be run and the Pipeline's Status is set to `FAILED`.
 
 ### Configuration Options
 
