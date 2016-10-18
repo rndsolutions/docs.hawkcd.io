@@ -108,14 +108,14 @@ Task
 --------------
 ### Overview
 
-A Task is an action that is performed on a server/machine or inside a container where a `HawkCD` Agent is installed. Tasks are contained inside Jobs and are always executed in the order they have in the Job. `HawkCD` offers four types of Tasks - `Exec`, `Fetch Material`, `Upload Artifact` and `Fetch Artifact`.
+A Task is an action that is performed on a server/machine or inside a container where a `HawkCD` Agent is installed. Tasks are contained inside Jobs and are always executed in the order defined in the Job. `HawkCD` offers 4 types of Tasks - `Exec`, `Fetch Material`, `Upload Artifact` and `Fetch Artifact`.
 
 ### Configuration Options
 
-All Tasks have a `Run If Condition` option. `Passed` (set by default), `Failed` or `Any` are the selectable choices.
+All Tasks have a `Run If Condition` option. Available options are `Passed` (set by default), `Failed` and `Any`.
 
-* `Passed` - if selected, the Task will be executed only in case the one before it completed successfully. If the Task is to be executed first the option is ignored.
-* `Failed` - if selected, the Task will be executed only if the one before it failed to complete successfully.
+* `Passed` - if selected, the Task will be executed only if the previous one completed successfully. If the Task is first in order, then the `Run If Condition` is ignored.
+* `Failed` - if selected, the Task will be executed only if the previous one failed to complete successfully.
 * `Any` - if selected, the Task will be executed regardless of the status of the previous one.
 
 ### Task Scenarios
@@ -127,19 +127,19 @@ All Tasks have a `Run If Condition` option. `Passed` (set by default), `Failed` 
 Exec
 --------------
 ### Overview
-The ``Exec`` task is the most universal type of tasks HawkCD provides. It allows to do just anything you can think of on a server where the task is executed on. You can run script, e.g. ``PowerShell``, ``Shell``, execute commands etc.
-
-The `Exec Task` is the most universal type of Task `HawkCD` offers. It allows you to do just about anything you can think of on a given Server where the Task is executed. You can run scripts (e.g., PowerShell, Shell), execute commands, etc.
+The ``Exec`` task is the most universal type of task `HawkCD` provides. It allows you to do just about anything you can think of on the server the task is executed on. You can run scripts (e.g. ``PowerShell``, ``Shell``) or execute any console (e,g, ``Command Prompt``, ``Terminal``) command.
 
 ### How does it work?
 
-The `Exec Task` contains the following attributes: `Command`, `Arguments` and `Working Dir`.
+The `Exec` Task contains the following attributes: `Command`, `Arguments` and `Working Dir`.
 
-* `Command` - executable name to run, usually for Linux -`/bin/bash`, for Windows `cmd`
-* `Arguments` - arguments to be passed to the executable (e.g., Linux - `-c cp -r dir dir1` , Windows `/c echo %PATH%`)
-* `Working Dir` - the directory in which the process will run
+* `Command` - executable name to run, usually for Linux -`/bin/bash`, for Windows `cmd`.
+* `Arguments` - arguments to be passed to the executable (e.g., Linux - `-c cp -r dir dir1` , Windows `/c echo %PATH%`).
+* `Working Dir` - the directory in which the process will run, relative to the root directory of the Server.
 
 Example commands:
+
+On Linux:
 
 ```bash
 
@@ -148,58 +148,70 @@ Example commands:
   /bin/bash -c cp -r dir1/  dir2
 
 ```
-The above command runs on Linux based systems the `bash` executable and passes the `cp` command with arguments to it
+The above command runs the `bash` executable, creates a new process with `-c` and passes the `cp` command with the `-r dir1/ dir2` arguments to it.
+
+On Windows:
+
+```bash
+
+   #display %PATH%
+
+   cmd /c echo %PATH%
+
+```
+The above command runs the `cmd` executable, creates a new process with `/c` and passes the `echo` command with the `%PATH%` argument to it.
+
 
   <div class="admonition note">
   <p class="admonition-title">Note</p>
   <p>
-  You can think of `HawkCD` `Exec Task` as a universal command executor. In fact it can run any command via `cmd` or `/bin/bash`, `/bin/sh` as long as it's in the environment path (system | user) of the system, otherwise the `Command` value must be a direct path to the targeted executable on the system.
+  You can think of the `HawkCD` `Exec` Task as a universal command executor. In fact it can run any command via `cmd` or `/bin/bash`, `/bin/sh` as long as it's in the environment path (system | user) of the system. Otherwise, the `Command` value must be a direct path to the targeted executable on the system.
   </p>
   </div>
 
 ### Configuration Options
 
-The `Exec` Task provides one configuration option:
+The `Exec` Task provides 1 configuration option:
 
- * ``Ignore Errors`` - The Task's status is set to `PASSED` regardless if it completed successfully or not.
+ * ``Ignore Errors`` - If selected, the Task's status is set to `PASSED`, regardless if it completed successfully or not.
 
 Fetch Material
 ---------------
 ###Overview
 
-The `Fetch Material` Task allows to fetch [Materials](/concepts/#materials) already defined with the system. At the moment `HawkCD` supports only Materials of type `Git`, meaning that you can define and fetch only Materials of type `Git` as input to your Pipelines. Future versions may support other types (e.g., `TFVC`, `SVN`, etc.). A common use case is when you need to build your source code but before doing that you need to fetch it on an Agent first.
+The `Fetch Material` Task allows the user to fetch [Materials](/concepts/#materials) already defined within the system. At the moment the only type of Material `HawkCD` supports is `Git`, meaning that you can define and fetch only Materials of type `Git` as input for your Pipelines. Future versions may support other types (e.g., `TFVC`, `SVN`, etc.). A common use case is when you need to build your source code, but before doing so you need to fetch it on an Agent first.
 
 ### How does it work?
 
-The `Fetch Material` Task clones a Git repository directly from the project's source to a `HawkCD` Server and Agent.
+The `Fetch Material` Task clones a Git repository directly from the project's source to a `HawkCD` Agent.
 
 ### Configuration Options
 
 ``Fetch Material`` Task provides one configuration option:
 
-* `Material` - At the moment `HawkCD` supports only one Material per Pipeline. Multiple Materials will be added into future versions.
+* `Material` - the predefined material to be fetched. At the moment `HawkCD` supports only one Material per Pipeline. Support for multiple Materials will be added to future versions.
 
 Upload Artifact
 ----------------
 ### Overview
 
-The `Upload Artifact` Task allows users to upload build artifacts to `HawkCD` a Server. A common use case is when source code is compiled and the build output is stored on the Server via the `Upload Artifact` Task, then using `Fetch Artifact` to deploy artifacts to the appropriate Agent.
+The `Upload Artifact` Task allows users to upload build artifacts to a `HawkCD` Server. A common use case is when source code is compiled and the build output is stored on the Server via the `Upload Artifact` Task, then using `Fetch Artifact` to deploy artifacts to the appropriate Agent.
 
 ### How does it works?
 
-The `Upload Artifact` Task takes a file or a folder (usually created by an Agent), archives it creating a .zip file and sends it to the Server. Once on the Server the archive is unzipped and stored in the Artifacts folder.
+The `Upload Artifact` Task takes a file or a folder (usually created by an Agent), archives it by creating a .zip file and sends it to the Server. Once on the Server the archive is unzipped and stored in the Artifacts folder.
 
 ### Configuration Options
 
-The `Upload Artifact` Task provides two configuration options:
+The `Upload Artifact` Task provides 2 configuration options:
 
-* `Source` - Path to the Artifact starting at `../Agent/Pipelines/<PipelineName>/`. If no `Source` is selected the entire contents of the folder are uploaded.   
-* `Destination` - A folder or folders to be created where the Artifact is stored. If no `Destination` is selected the Artifact is saved in `../Server/Arttifacts/<PipelineName>/<PipelineRun>/` with no additional folders.
+* `Source` - path to the Artifact starting at `../Agent/Pipelines/<PipelineName>/`. If no `Source` is selected the entire contents of the folder are uploaded.
+* `Destination` - a folder or folders to be created where the Artifact is stored. If no `Destination` is selected the Artifact is saved in `../Server/Arttifacts/<PipelineName>/<PipelineRun>/` with no additional folders.
 
   <div class="admonition note">
   <p class="admonition-title">Note</p>
   <p>
-  The `Upload Artifact` Task uses relative paths to the Agent sandbox. Artifacts must be in `../Agent/Pipelines/<PipelineName>/` folder to be uploaded to the `Server`.   
+  The `Upload Artifact` Task uses paths relative to the Agent sandbox. Artifacts must be in `../Agent/Pipelines/<PipelineName>/` folder to be uploaded to the `Server`.   
   </p>
   </div>
 
@@ -211,52 +223,47 @@ The `Fetch Artifact` Task allows users to download Artifacts from the Server rep
 
 ### How does it work?
 
-The `Fetch Artifact` Task takes a file or a folder previously stored on the Server, archives it creating a .zip file and sends it to the Agent. Once on the Agent the archive is unzipped and stored in the currently executing Pipeline's folder.
+The `Fetch Artifact` Task takes a file or a folder previously stored on the Server, archives it by creating a .zip file and sends it to the Agent. Once on the Agent the archive is unzipped and stored in the currently executing Pipeline's folder.
 
 ### Configuration options
 
-The `Fetch Artifact` Task provides four configuration options:
+The `Fetch Artifact` Task provides 4 configuration options:
 
-* `Pipeline` - the name of the Pipeline which previously uploaded the Artifact. The user can select any Pipeline that he/she has at least permission type `Viewer`.
+* `Pipeline` - the name of the Pipeline which previously uploaded the Artifact. The user can select any Pipeline for which he/she has at least permission type `Viewer`.
 * `Run` - the specific Pipeline run which previously uploaded the Artifact. The `latest` option is useful when the user wants to fetch an Artifact the will be uploaded with the current execution of the Pipeline.
-* ``Source``  - Path to the Artifact starting at `../Server/Artifacts/<PipelineName>/<PipelineRun>/`. If no `Source` is selected the entire contents of the folder are fetched.   
-* ``Destination`` - A folder or folders to be created where the Artifact is fetched. If no `Destination` is selected the Artifact is saved in `../Agent/Pipelines/<PipelineName>/` with no additional folders.
+* ``Source``  - path to the Artifact starting at `../Server/Artifacts/<PipelineName>/<PipelineRun>/`. If no `Source` is selected, the entire contents of the folder are fetched.   
+* ``Destination`` - a folder or folders to be created where the Artifact is fetched. If no `Destination` is selected the Artifact is saved in `../Agent/Pipelines/<PipelineName>/` with no additional folders.
 
 Pipeline Group
 ---------------
 
 #### Overview
-``Pipeline Group`` can be thought as a container for Pipelines. Each ``Pipeline`` belongs to a group.
+``Pipeline Group`` can be thought as a container for Pipelines. Each Pipeline belongs to a group (unless it's unassigned).
 
 
 #### How it works?
-Grouping pipelines helps managing, sharing and restricting pipelines among teams.  
-Each ``Pipeline Group`` can be configured to belong to a specif QA, Software Engineers,  
-DevOps or any other team. Each rule of the ``Pipeline Group`` applies to all the  ``Pipelines`` in the group.  
+Grouping pipelines helps managing, sharing and restricting Pipelines among teams.  
+Each ``Pipeline Group`` can be configured to belong to a specific ``User Group`` (e.g. QA, Software Engineers, DevOps, etc). To learn more, see [User Group section](/concepts/#user-groups).<br>
+Each permission rule of the ``Pipeline Group`` applies to all of the Pipelines in the group, unless the Pipeline has its own permission rule. When it does, it overrides the ``Pipeline Group``'s rule.
 
-
-Pipeline Group example:
-
-
-//
 
 #### Configuration Options
-There are two options available to  a ``Pipeline Group``:    
+There are 2 options available for each ``Pipeline Group``:    
 
- * ``Assign Pipeline`` - Assigns unassigned  or pipeline from another pipeline group to the current pipeline group.   
+ * ``Assign Pipeline`` - Assigns a Pipeline to the current Pipeline Group regardless of whether it's already assigned or not.   
 
- * ``UnAssign Pipeline``. Unassigns pipeline. Pipeline moves to ``UnassignedPipelines`` pipeline group.
+ * ``Unassign Pipeline``. Unassigns a pipeline from the current Pipeline Group. The unassigned Pipeline moves to the ``UnassignedPipelines`` Pipeline Group.
 
 ### Pipeline Scenarios
- * [Add new Pipeline Group](/)
- * [Assign Pipeline Group](/)
+ * [Add Pipeline Group](/)
+ * [Assign Pipeline](/)
  * [Unassign Pipeline](/)
  * [Delete Pipeline Group](/)
 
  <div class="admonition note">
  <p class="admonition-title">Note</p>
  <p>
- ``Pipeline Group`` can be deleted only if there is no ``Pipeline`` assigned to it.
+A ``Pipeline Group`` can only be deleted if there are no Pipelines assigned to it.
  </p>
  </div>
 
@@ -265,30 +272,29 @@ There are two options available to  a ``Pipeline Group``:
 
 Materials
 ---------
-grouping pipelines helps your work manage, share and restrict pipelines among teams.
 #### Overview
-Materials represent ``code`` (git) ``artifact`` (Nuget) repositories. For every pipeline there
-should be at least one material defined.
+A ``Material`` represents a branch of a ``Git`` repository. It is used to define which part of your project(s) the Pipeline will work with. For every Pipeline there
+must be at least one ``Material`` defined.
 
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>
-At the moment HawkCD supports only materials of type git, but feature version will provide
-support for other types of materials.
-</p>
-</div>
+  <div class="admonition note">
+  <p class="admonition-title">Note</p>
+  <p>
+  At the moment ``HawkCD`` only supports ``Git`` for its ``Materials``, but future versions will provide
+  support for other types of materials.
+  </p>
+  </div>
 
 
 #### How it works?
-A ``Material`` is cause for a Pipeline to run. ``HawkCD`` automatically tracks your material and fetches the latest
-version of it. At the moment ``HawkCD`` supports only one ``material`` per pipeline, but in feature version multiple
-materials could be assigned to a single pipeline.
+A ``Material`` can be set to trigger your Pipeline to run automatically. ``HawkCD`` automatically tracks your Material and fetches the latest
+version of it.
+<!-- if ``Poll for changes`` is selected. -->
 
 #### Configuration Options
-Materials contains the following attributes: ``Material Name``, ``Git Url``, ``Git Branch`` and ``Credentials``.
+Materials contains the following attributes: ``Material Name``, ``Git URL``, ``Git Branch`` and ``Credentials``.
 
- * ``Material Name`` - with which identifies on the HawkCD server.
- * ``Git Url`` - URL to project git repository.
+ * ``Material Name`` - with which identifies on the ``HawkCD`` server.
+ * ``Git URL`` - URL to project git repository.
 
 Resource | Tags
 ---------------
@@ -349,7 +355,7 @@ The server has the notion for ``scope`` and ``permission type``. ``Scope`` repre
 * ``Operator`` - a user can view and operate (run, re-run, pause, stop, etc.) a given resource (e.g. Pipeline & Stage) and its child resources
 * ``Admin``
 
-####Groups
+#### User Groups
 
 A ``group`` is a set of claims (scope + permissions) that are grouped together. A ``group`` would ease the authorization management across groups of people. E.g. if we have 3 teams - dev, qa & ops, rather than assigning permissions individually to each team member, we would create a group and add scope and permissions to it, then add the members to the group, so that they inherit all of the ``group’s`` permissions.
 
