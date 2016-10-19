@@ -313,10 +313,31 @@ If there is no suitable Agent for a Job, the Server sets the Pipeline's Status t
 
 Environment Variables
 ---------------------
-
 ###Overview
 
+`HawkCD` provides the ability to add Environment Variables to Pipelines, Stages and Jobs. They allow the User to hide long values, like directory paths and commands, behind simple words (e.g., `%PATH%` or `%COMMAND%`), simplifying the creation of `Exec` Tasks that reuse the same values in their `Arguments`.
+
 ###How does it work?
+
+As mentioned above Environment Variables are used in `Exec` Tasks. To use an Environment Variable you must type its `Name` and surround it with `%` signs. Once on the Agent all Environment Variables are replaced by their `Values` and the Tasks are executed. If the Environment Variable is not added to the Pipeline, Stage or Job the Task is located in or if it is not surrounded with `%` signs the Agent will not recognize it and the Task will fail.
+
+If an Environment Variable with the same `Name` is added to a Pipeline, Stage and Job, that are within each other, it will be overridden in a cascading manner, meaning - the `Value` of the Pipeline Environment Variable will be overridden by the `Value` of the Stage one and the `Value` of the Stage one will be overridden by the `Value` of the Job one.
+
+Every Pipeline comes with a predefined Environment Variable named `COUNT`. It starts from 0 and is incremented every time you run the Pipeline it belongs to. It is useful if you want to use versioning for your builds. If you want to reset it, simply put it back to 0, or any other number as long as it's not negative.
+
+  <div class="admonition note">
+  <p class="admonition-title">Note</p>
+  <p>
+  Predefined Environment Variables cannot be deleted.
+  </p>
+  </div>
+
+### Configuration Options
+Environment Variables contain the following attributes:
+
+* `Name` - the word or words used to refer to the Environment Variable
+* `Value` - the value that is actually used when the `Exec` Task is executed
+* `Secured` - if checked, the `Value` is displayed by `******` and it will be known only to users able to edit the Pipeline the Environment Variable belongs to.
 
 Agent
 ------

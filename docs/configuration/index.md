@@ -94,18 +94,15 @@ Running a Pipeline
 
 Manage Pipeline Groups
 ----------------------
-
-Pipeline Groups allow grouping Pipelines together.
-
 ### Add new Pipeline Group
 
 * Go to Admin Screen
 * Select `Pipeline Groups` tab and press the `Add` button
 * Fill in the group name and press `OK` button
 
-### Assign pipeline to a group
+### Assign Pipeline to Pipeline Group
 * Go to the Admin Screen
-* Select `Pipeline Groups` tab and choose group
+* Select `Pipeline Groups` tab and choose a Pipeline Group
 * Press the `Assign pipeline` button
 * All Pipelines `assigned` to other groups and all `unassigned` Pipelines will be displayed
 * Select a Pipeline and press the `OK` button
@@ -113,7 +110,7 @@ Pipeline Groups allow grouping Pipelines together.
 ### Delete Pipeline Group
 
 * Go to the Admin Screen
-* Select `Pipeline Groups` tab and choose a group
+* Select `Pipeline Groups` section and choose a group
 * Press the bin button in the right corner of the group
 
 <div class="admonition warning">
@@ -123,48 +120,41 @@ Pipeline Groups allow grouping Pipelines together.
 
 Manage Materials
 ----------------
-Materials represent ``code`` (git)  and ``artifact`` (NuGet) repositories. For every pipeline there should be at least one material defined.
+### Add new Material
 
-### Add a new material
+* Go to Admin Screen
+* Select `Materials` section
+* Press the `Add` button
+* Fill in the fields and press `OK`
 
-* Go to the Admin Screen
-* Select ``Materials`` section
-* Press the ``Add`` button
-* Fill in the ``Material Name``, ``Git Url`` and  ``Branch``
-* Fill in the ``Credentials`` details if the material is private git repository
+### Update Existing Material
 
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>
-  At the moment HawkCD supports only materials of type git, but future versions will provide support for other types of materials
-</p>
-</div>
+* Go to Admin Screen
+* Select `Materials` section
+* Press the `Edit` button
+* Update the Material's fields and press `OK`
 
+### Delete Existing Material
 
-### Update an Existing Material
+* Go to Admin Screen
+* Select `Materials` section
+* Press the `Delete` button and press `OK`
 
-* Go to the Admin Screen
-* Select ``Materials`` section
-* Press the ``edit`` button
-* Update the Material's fields and press ``OK``
-
-Manage Users & Groups
+Manage User Groups
 ---------------------
-HawkCD allows managing users and groups with ease.
+### Add User Group
 
-### Add a User Group
-
-* Go to the Admin Screen
-* Select ``User Groups`` menu
-* Press ``Add`` button
+* Go to Admin Screen
+* Select `User Groups` section
+* Press `Add` button
 * Fill in the group name and click ``OK``
 
-### Manage user group permissions
+### Manage User Group permissions
 
-* Go to the Admin Screen
-* Select ``User Groups`` menu
+* Go to Admin Screen
+* Select `User Groups` section
 * Choose a ``User Group`` by clicking the ``cog`` button
-* From the pop-up window ``add/update/delete``  ``scope`` and ``permissions`` for the group
+* Choose to add/update/delete the group's `scope` and `permissions` and click `OK`
 
 ### Assign/Remove users to/from a group
 
@@ -256,7 +246,7 @@ Agents Management
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>
-  When an agent connects to the server for first time it is disabled, it requires server administrator to enable it -  becomes available for job
+  When an Agent connects to the server for first time it is disabled, it requires server administrator to enable it -  becomes available for job
 </p>
 </div>
 
@@ -265,7 +255,6 @@ Agents Management
 * Go to the Agents screen
 * Press the ``edit resources`` button
 * ``Add/Update/Delete`` agent [resources](/concepts/#resource-tags)
-
 
 <div class="admonition note">
 <p class="admonition-title">Note</p>
