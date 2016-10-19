@@ -285,30 +285,31 @@ must be at least one ``Material`` defined.
 
 
 #### How it works?
-A ``Material`` can be set to trigger your Pipeline to run automatically. ``HawkCD`` automatically tracks your Material and fetches the latest
-version of it.
+A Material is assigned to a Pipeline the moment it is created. When a Pipeline is run it is updated locally on the Server to the latest Git commit. A ``Material`` can be set to trigger your Pipeline to run automatically using Automatic Pipeline Scheduling. When selected, ``HawkCD`` automatically tracks your Material and fetches the latest
+version of it. When a change is made (e.g. a commit is pushed) ``HawkCD`` will automatically trigger your Pipeline.
 <!-- if ``Poll for changes`` is selected. -->
 
 #### Configuration Options
-Materials contains the following attributes: ``Material Name``, ``Git URL``, ``Git Branch`` and ``Credentials``.
+Materials contain the following options:
 
- * ``Material Name`` - with which identifies on the ``HawkCD`` server.
- * ``Git URL`` - URL to project git repository.
+ * ``Material Name`` - the name of the Material. Once the Material is created the name cannot be changed.
+ * ``Git URL`` - URL to your GitHub project repository (the one you would use to clone a repository). This option requires that the URL is valid and ends with ".git" (e.g., https://github.com/rndsolutions/hawkcd.git). SSH URLs are currently not supported.
+ * ``Git Branch`` - the git branch to track from (e.g. master). If nothing is entered it will default to "master".
+ * ``Credentials`` - your GitHub credentials. If the git repository is private, you will need to provide your GitHub credentials, so that ``HawkCD`` can access your repository.
 
 Resource | Tags
 ---------------
 
-Resources are used to route jobs to agents. A common use case is when you have multiple agents installed on various server environments and you want to specify a certain job to be executed on concrete agent. Imagine you have a build server and application server,  of course you don't want when you kick off a "Build Stage" -> "Build job" to be routed to the Application Server, so applying a resource to the job, as well as to the agent would allow HawkCD to correctly assign jobs only to the matching agents
+Resources are used to assign Jobs to Agents. A common use case is when you have multiple Agents installed on various server environments and you want to specify a certain Job to be executed on a specific Agent. Imagine you have a Build Server and an Application Server. You wouldn't want your build to be assigned to the Application Server when you kick off a "Build Stage" -> "Build Job", so applying a Resource to the Job, as well as to the Agent, would allow ``HawkCD`` to correctly assign Jobs only to the matching Agents.
 
-The resources assigned to an agent and job must match 100% to get jobs routed correctly
+The Server tries to assign Jobs to Agents with the exact Resources the Job has. It prioritizes Agents that have the least amount of extra resources. Agents must have at least all of the Job's Resources to be assigned that Job. If a Job has no Resources, it can be assigned to any Agent.
 
-> Assign resource to a job
-
-![Screenshot](../img/assign_resource_to_job.png)
-
-> Assign resource to an agent
-
-![Screenshot](../img/assign_resource_to_agent.png)
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>
+If there is no suitable Agent for a Job, the Server sets the Pipeline's Status to AWAITING.
+</p>
+</div>
 
 Environment Variables
 ---------------------
@@ -322,47 +323,71 @@ Agent
 
 ### Overview
 
-``HawkCD`` Agents are the workers that execute ``Jobs/Tasks``. All Tasks configured in the system run on ``HawkCD`` Agents. A common workflow is: The ``HawkCD`` Server checks for changes in Materials and when a change is detected a Pipeline gets triggered, the corresponding Jobs are assigned to eligible Agents and all tasks of theirs are executed.
+``HawkCD`` Agents are the workers that execute Jobs and their Tasks. All Tasks configured in the ``HawkCD`` Server run on ``HawkCD`` Agents. A common workflow is when the ``HawkCD`` Server detects a change in the Material and a Pipeline is triggered, the corresponding Jobs are assigned to eligible Agents and all Tasks in that Job are executed by that Agent. The Agent then returns the result of the Job back to the Server.
 
 ###How does it work?
-In the agent ``install dir`` a folder called ``Pipelines``, referred also as agent ``sandbox`` is created to store data for each pipeline. If we execute jobs from two pipelines on a specific agent we would have the following directory structure  ``InstallDir/Pipelines/Pipeline1`` and ``InstallDir/Pipelines/Pipeline2``
+In the directory the Agent was installed (the ``InstallDir``), a folder called ``Pipelines`` (also referred to as the Agent's ``Sandbox``) is created to store data for each Pipeline. If we execute Jobs from two Pipelines named ``Pipeline1`` and ``Pipeline2`` on a specific Agent, we would have the following directory structure:<br>
+``InstallDir/Pipelines/Pipeline1`` and ``InstallDir/Pipelines/Pipeline2``
 
-When an agent registers for first time with the server it is ``disabled`` meaning that, the server knows about it but unless it's enabled explicitly by the server Admin, jobs will be not be distributed to it  
+When an Agent registers for first time with the Server, it defaults to ``Disabled``. Meaning that the Server knows about it, but unless it's enabled explicitly by the Server Admin, Jobs will not be assigned to it.  
+
+  <div class="admonition note">
+  <p class="admonition-title">Note</p>
+  <p>
+  If an Agent hasn't reported for a certain amount of time it's considered ``Disconnected``.
+  </p>
+  </div>
 
 
 #### Agent Statuses
 
-* Idle - ready to accept jobs
-* Running - executing job
-* Disconnected - used to be connected but no longer available with the server
+* ``Idle`` - the Agent is ready to accept Jobs.
+* ``Running`` - the Agent is currently executing a Job. Further Jobs cannot be assigned to it until it completes the Job.
 
 
 Security
 --------
 ### Overview
-The server has the notion for ``scope`` and ``permission type``. ``Scope`` represents a certain level from the server where specific rights can be applied. On the other hand, ``permission types`` define rights - what a user can do in concrete ``scope``. Combining both concepts (``scope`` & ``permission type``) provides a flexible authorization model.
+The server has the notion of ``Permission Scope``, ``Permission Type`` and ``Permission Entity``. <br>
+
+* ``Permission Scope`` represents the object level at which specific permissions can be applied. <br>
+* ``Permission Types`` define permissions - what a user can do in specific ``Permission Scope``. <br>
+* ``Permission Entity`` is the specific object(s) for which the Permissions are applied. <br>
+
+ Combining all 3 concepts (``Permission Scope``, ``Permission Type`` and ``Permission Entity``) provides a flexible authorization model.
 
 #### Permission Scopes
 
-* ``Server`` - global server scope
-* ``Pipeline group`` - pipeline group level
-* ``Pipeline`` - pipeline level scope
+* ``Server`` - applies at all levels (all Pipeline Groups and Pipelines).
+* ``Pipeline Group`` - applies at the Pipeline Group level.
+* ``Pipeline`` - applies at the Pipeline level.
 
 #### Permission Types
 
-* ``Viewer``  - a user can only view a given resource and its child resources
-* ``Operator`` - a user can view and operate (run, re-run, pause, stop, etc.) a given resource (e.g. Pipeline & Stage) and its child resources
-* ``Admin``
+* ``Viewer``  - can only view a given resource and its child resources (e.g. if you're a Pipeline ``Viewer`` you can view all Stages, Jobs and Tasks in that Pipeline aswell).
+* ``Operator`` - can view and operate (run, re-run, pause, stop, etc.) a given resource and its child resources (e.g. if you're a Pipeline ``Operator`` you can also run its Stages aswell).
+* ``Admin`` - can view, operate and configure (edit) a given resource and its child resources (e.g. if you're a Pipeline ``Admin`` you can configure its Stages, Jobs and Tasks aswell).
 
-#### User Groups
+#### Permission Entities
 
-A ``group`` is a set of claims (scope + permissions) that are grouped together. A ``group`` would ease the authorization management across groups of people. E.g. if we have 3 teams - dev, qa & ops, rather than assigning permissions individually to each team member, we would create a group and add scope and permissions to it, then add the members to the group, so that they inherit all of the ``group’s`` permissions.
+There are 2 types of ``Permission Entities`` - specific and generic. <br>
+Specific ``Permission Entities`` refer to a single object in a given ``Permission Scope`` (e.g. a Pipeline or Pipeline Group), while generic ``Permission Entities`` refer to all objects in a given ``Permission Scope`` (e.g. all Pipelines or all Pipeline Groups).
 
-#### Permission Inheritance
+#### Permission Inheritance and Overriding
 
-If a user is assigned a ``pipeline group`` scope and an ``admin permission`` type that would mean that all resources that are children of the current ``pipeline group`` (scope) e.g. one or more pipelines, will obey the permission assigned to their parent - pipeline group.
+Permissions in ``HawkCD`` follow a set of inheritance rules. Objects higher in the hierarchy (e.g. Pipeline Groups are on a higher level than Pipelines) apply their permissions to all objects that belong to it, but can be overriden by permissions for objects that are lower in the hierarchy, even if they belong to the higher object.
 
-#### Overriding Permissions
+For example, let's say that you have a ``Viewer`` permission for a specific Pipeline Group. That means you can view, but not operate or configure all of the Pipelines inside that Pipeline Group aswell. However, if you have an ``Admin`` permission for a Pipeline inside that Pipeline Group, you will be able to configure that Pipeline specifically, because that permission is on a lower level than the Pipeline Group permission you have. In other words, it's more specific, thus more important.
 
-This is the case when we want to give a user permissions at a given scope e.g. "pipeline group", however we need to either restrict or broaden the rights to one or more child resources, e.g. Pipelines.
-Given is a Pipeline group named "Dev pipelines" and we want to have one of our teams to have view rights for the group. Combining the Pipeline Group scope and the view permission type would allow anyone of the team to see all pipelines. However, if we want the Development Lead of the team to be able to administer one or more pipelines from the group, but not all of them, we would assign in addition to its view rights inherited from the pipeline group scope, a pipeline scope with admin permission for a concrete pipelines that he needs administration rights for. In fact we'll override the inherited rights he received as part of the Pipeline group scope.
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>
+The Pipeline level overrides all other levels. The Pipeline Group level overrides the Server level. The Server level doesn't override any other level.
+</p>
+</div>
+
+#### Users and User Groups
+
+Users can be assigned to User Groups. User Groups aim to make managing the Permissions of multiple Users at the same time easier, because both Users and User Groups have Permissions. This provides a lot of flexibility to how you build your Permissions. Users' Permissions override the Permissions of his User Group.
+
+For example, let's say you have 2 developer teams. We'll call them "DevTeam1" and "DevTeam2". DevTeam1 has their own set of Pipelines and Pipeline Groups, however so does DevTeam2. In this case you can create 2 User Groups called "DevTeam1" and "DevTeam2". You can assign all of the members of your two developer teams to their respective User Groups and manage all of their Permissions at once by setting the Permissions on the User Group itself, rather than on every member individually. This makes changes to the Permissions of each team very fast and easy. Let's say that both teams have a Development Lead and they need to be able to edit certain Pipelines, but you don't want the whole team being able to edit those Pipelines, just operate them. You can set the 2 User Groups to have a ``Viewer`` Permission for their Pipeline Groups and ``Operator`` Permissions for the Pipelines they need to be able to run. Then, you can go to each of the individual Development Leads and give them an ``Admin`` Permission for each of the Pipelines or Pipeline Groups they need to be able to edit. This will override their ``Viewer`` Permission from the User Group. In doing so, all of your developers can view, run, re-run, pause and cancel their Pipelines and your Development Leads can additionally edit some or all of those Pipelines too.
