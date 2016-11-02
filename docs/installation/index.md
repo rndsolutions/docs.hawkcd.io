@@ -50,7 +50,7 @@ We provide MSI installers for Windows OS.
 
 ### Install & run the Server
 
-Run the HawckCD Server installer and follow the steps below:
+The Windows version of HawkCD ships with a .msi and .exe. You will need to download both to install HawkCD. Run the HawckCD Server .exe (not the .msi) installer and follow the steps below:
 
 * Once the welcome screen is shown click on the Next button.
 
